@@ -53,13 +53,8 @@ export default class SiderMenu extends PureComponent {
         })
     }
 
-    // 返回平台的主页
-    handleBackIndex = () => {
-        console.log('...')
-    }
-
     render() {
-        const { logo, collapsed, onCollapse, fixSiderbar, theme, isMobile } = this.props
+        const { /* logo,  */ collapsed, onCollapse, fixSiderbar, theme, isMobile } = this.props
         const { openKeys } = this.state
         const defaultProps = collapsed ? {} : { openKeys }
 
@@ -83,18 +78,8 @@ export default class SiderMenu extends PureComponent {
                 className={siderClassName}
             >
                 <div className={styles.logo} id="logo">
-                    {/* <div
-                        onClick={this.handleBackIndex}
-                        style={{
-                            cursor: 'pointer',
-                        }}
-                    >
-                        <img src={logo} alt="logo" />
-                        <h1>{title}</h1>
-                    </div> */}
-                    {/* TODO: 这里重定向 */}
-                    <Link to="/home">
-                        <img src={logo} alt="logo" />
+                    <Link to="/">
+                        {/* <img src={logo} alt="logo" /> */}
                         <h1>{title}</h1>
                     </Link>
                 </div>

@@ -5,7 +5,6 @@ import groupBy from 'lodash/groupBy'
 // import NoticeIcon from '../NoticeIcon'
 // import HeaderSearch from '../HeaderSearch'
 import HeaderDropdown from '../HeaderDropdown'
-import { mainSite } from '@/utils/utils'
 
 import styles from './index.less'
 
@@ -161,9 +160,6 @@ export default class GlobalHeaderRight extends PureComponent {
                         showViewMore
                     />
                 </NoticeIcon> */}
-                <a href={mainSite()} className={styles.action}>
-                    <Icon type="retweet" title="返回旧版后台" />
-                </a>
                 {currentUser.userName ? (
                     <HeaderDropdown overlay={menu}>
                         <span className={`${styles.action} ${styles.account}`}>

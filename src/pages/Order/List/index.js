@@ -5,10 +5,10 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
 
-import { getComodityListMOCK } from './services'
+import { getOrderListMOCK } from './services'
 
 @connect(() => ({}))
-class CommodityManagement extends Component {
+class OrderList extends Component {
     state = {
         searchCondition: {}, // 搜索条件
         dataSrouce: [], // 表格数据
@@ -28,7 +28,7 @@ class CommodityManagement extends Component {
         const { pageNum, ...params } = parmas
         const { pagination, searchCondition } = this.state
 
-        getComodityListMOCK({
+        getOrderListMOCK({
             size: pagination.pageSize,
             index: pageNum || pagination.current,
             ...searchCondition,
@@ -91,15 +91,46 @@ class CommodityManagement extends Component {
                 <SearchForm
                     data={[
                         {
-                            label: 'sku品名/批次ID',
+                            label: '订单ID',
                             type: 'input',
-                            key: 'id',
+                            key: 'orderId',
                         },
                         {
-                            label: '状态',
+                            label: '用户手机',
+                            type: 'input',
+                            options: [{ key: 1, value: '选择1' }, { key: 2, value: '选择2' }],
+                            key: 'mobile',
+                        },
+                        {
+                            label: '订单时间',
+                            type: 'datepicker',
+                            key: 'date',
+                        },
+                        {
+                            label: '订单状态',
                             type: 'select',
-                            options: [{ key: 0, value: '上架' }, { key: 1, value: '下架' }],
-                            key: 'status',
+                            key: 'orderState',
+                            options: [
+                                { key: 1, value: '待支付' },
+                                { key: 2, value: '待发货' },
+                                { key: 3, value: '已挂账' },
+                                { key: 4, value: '已完成' },
+                                { key: 5, value: '已支付-现金' },
+                                { key: 6, value: '已取消' },
+                            ],
+                        },
+                        {
+                            key: 'payWay',
+                            label: '支付方式',
+                            type: 'select',
+                            options: [{ key: 1, value: '选择1' }, { key: 2, value: '选择2' }],
+                        },
+                        {
+                            key: 'sku',
+                            label: 'sku品名',
+                            type: 'select',
+                            showSearch: true,
+                            options: [{ key: 1, value: '选择1' }, { key: 2, value: '选择2' }],
                         },
                     ]}
                     buttonGroup={[{ onSearch: this.handleFormSearch }]}
@@ -107,94 +138,130 @@ class CommodityManagement extends Component {
                 <BasicTable
                     columns={[
                         {
-                            title: '商品批次 id',
+                            title: '订单时间',
+                            dataIndex: 'date1',
+                        },
+                        {
+                            title: '订单id',
                             dataIndex: 'id1',
                         },
                         {
-                            title: 'sku id',
+                            title: '客户id',
                             dataIndex: 'id2',
                         },
                         {
-                            title: 'sku品名',
+                            title: '客户电话',
                             dataIndex: 'a',
                         },
                         {
-                            title: '别名',
                             dataIndex: 'b',
-                        },
-                        {
-                            dataIndex: 'c',
-                            title: '品类',
-                        },
-                        {
-                            dataIndex: 'd',
-                            title: '品种',
-                        },
-                        {
-                            dataIndex: 'e',
-                            title: '产区',
-                        },
-                        {
-                            dataIndex: 'f',
-                            title: '存储情况',
-                        },
-                        {
-                            dataIndex: 'g',
-                            title: '加工情况',
-                        },
-                        {
-                            dataIndex: 'h',
-                            title: '外包装',
-                        },
-                        {
-                            dataIndex: 'i',
-                            title: '内包装',
-                        },
-                        {
-                            dataIndex: 'j',
-                            title: '实际规格值',
-                        },
-                        {
-                            dataIndex: 'k',
-                            title: '净重',
-                        },
-                        {
-                            dataIndex: 'date1',
-                            title: '采购日期',
+                            title: '客户姓名',
                         },
                         {
                             dataIndex: 'number1',
-                            title: '门店结算价',
+                            title: '订单金额',
                         },
                         {
-                            dataIndex: 'number2',
-                            title: '门店售价',
+                            dataIndex: 'c',
+                            title: '支付方式',
                         },
                         {
-                            dataIndex: 'number3',
-                            title: '入库库存',
+                            dataIndex: 'd',
+                            title: '订单状态',
                         },
                         {
-                            dataIndex: 'number4',
-                            title: '期初库存',
+                            dataIndex: 'id3',
+                            title: '商品批次ID',
                         },
                         {
-                            width: 100,
-                            dataIndex: 'number5',
-                            title: '期末库存',
+                            dataIndex: 'qwe',
+                            title: 'sku id',
                         },
                         {
-                            dataIndex: 'number6',
-                            title: '当前库存',
+                            dataIndex: 'd3',
+                            title: 'sku品名',
+                        },
+                        {
+                            dataIndex: 'f',
+                            title: '品类',
+                        },
+                        {
+                            dataIndex: 'g',
+                            title: '产区',
+                        },
+                        {
+                            dataIndex: 'h',
+                            title: '品种',
+                        },
+                        {
+                            dataIndex: 'i',
+                            title: '存储情况',
+                        },
+                        {
+                            dataIndex: 'j',
+                            title: '加工情况',
+                        },
+                        {
+                            dataIndex: 'k',
+                            title: '外包装',
+                        },
+                        {
+                            dataIndex: 'l',
+                            title: '内包装',
+                        },
+                        {
+                            dataIndex: 'm',
+                            title: '实际规格值',
                         },
                         {
                             dataIndex: 'n',
-                            title: '上下架状态',
+                            title: '净重',
+                        },
+                        {
+                            dataIndex: 'date2',
+                            title: '采购日期',
+                        },
+                        {
+                            dataIndex: 'number3',
+                            title: '门店结算价',
+                        },
+                        {
+                            dataIndex: 'number4',
+                            title: '门店在售价（单',
+                        },
+                        {
+                            dataIndex: 'number5',
+                            title: '售出数量',
+                        },
+                        {
+                            dataIndex: 'key-20',
+                            title: '门店在售价（总',
+                        },
+                        {
+                            dataIndex: 'key-21',
+                            title: '用户备注',
+                        },
+                        {
+                            dataIndex: 'key-22',
+                            title: '管理备注',
+                        },
+                        {
+                            dataIndex: 'key-23',
+                            title: '发票',
                         },
                         {
                             type: 'oprate',
-                            // fixed: 'right',
-                            buttons: [{ text: '售价/别名' }, { text: '生成尾货' }],
+                            buttons: [
+                                {
+                                    text: '编辑',
+                                },
+                                {
+                                    text: '记录',
+                                },
+                                {
+                                    text: '发货',
+                                },
+                            ],
                         },
                     ]}
                     dataSource={dataSrouce}
@@ -208,4 +275,4 @@ class CommodityManagement extends Component {
     }
 }
 
-export default CommodityManagement
+export default OrderList

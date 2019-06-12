@@ -29,7 +29,7 @@ class BasicTable extends Component {
                 col.title = col.title || '操作'
                 col.dataIndex = col.dataIndex || 'toolcol'
                 // 固定列
-                col.fixed = 'right'
+                // col.fixed = 'right'
 
                 if (!col.render && col.buttons && col.buttons.length) {
                     col.render = (_, record) => {
@@ -43,6 +43,7 @@ class BasicTable extends Component {
                                             onClick={() => onClick(record)}
                                             style={{
                                                 marginRight: 10,
+                                                marginBottom: 5,
                                                 ...style,
                                             }}
                                             type="default"
