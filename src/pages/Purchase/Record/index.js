@@ -5,8 +5,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
 
-// import { fetchFunction } from './services'
-const fetchFunction = async () => ({ data: [], pages: { count: 0 }, errcode: 0 })
+import { getRecordListMOCK } from '../services'
 
 @connect(() => ({}))
 class PurchaseRecord extends Component {
@@ -29,7 +28,7 @@ class PurchaseRecord extends Component {
         const { pageNum, ...params } = parmas
         const { pagination, searchCondition } = this.state
 
-        fetchFunction({
+        getRecordListMOCK({
             size: pagination.pageSize,
             index: pageNum || pagination.current,
             ...searchCondition,

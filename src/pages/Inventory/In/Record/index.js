@@ -4,12 +4,11 @@ import { connect } from 'dva'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
-import ButtonGroup from '@/components/ButtonGroup'
 
-import { getCommodityListMOCK } from '../services'
+import { getInListMOCK } from '../../services'
 
 @connect(() => ({}))
-class PurchaseCommodity extends Component {
+class InventoryInRecord extends Component {
     state = {
         searchCondition: {}, // 搜索条件
         dataSrouce: [], // 表格数据
@@ -29,7 +28,7 @@ class PurchaseCommodity extends Component {
         const { pageNum, ...params } = parmas
         const { pagination, searchCondition } = this.state
 
-        getCommodityListMOCK({
+        getInListMOCK({
             size: pagination.pageSize,
             index: pageNum || pagination.current,
             ...searchCondition,
@@ -92,77 +91,117 @@ class PurchaseCommodity extends Component {
                 <SearchForm
                     data={[
                         {
-                            label: 'sku品名',
+                            label: '日期',
+                            type: 'datepicker',
+                            key: 'date',
+                        },
+                        {
+                            label: '发货地',
                             type: 'input',
-                            key: 'sku',
+                            options: [{ key: 1, value: '选择1' }, { key: 2, value: '选择2' }],
+                            key: 'outPlace',
+                        },
+                        {
+                            label: '收货地',
+                            type: 'input',
+                            key: 'inPlace',
                         },
                     ]}
                     buttonGroup={[{ onSearch: this.handleFormSearch }]}
                 />
-                <ButtonGroup
-                    secondary={[
-                        {
-                            text: '确定进货',
-                        },
-                    ]}
-                />
                 <BasicTable
                     columns={[
                         {
-                            title: 'sku id',
-                            dataIndex: 'id1',
+                            title: '入库日期',
+                            dataIndex: 'aa',
                         },
                         {
-                            title: '商品tupian',
+                            title: '收货员',
+                            dataIndex: 'dd',
+                        },
+                        {
+                            title: '发货日期',
+                            dataIndex: 'date1',
+                        },
+                        {
+                            title: '物流公司',
                             dataIndex: 'a',
                         },
                         {
-                            title: 'sku品名',
+                            title: '车辆类型',
                             dataIndex: 'b',
                         },
                         {
-                            title: '品类',
+                            title: '车牌号码',
+                            dataIndex: 'number1',
+                        },
+                        {
                             dataIndex: 'c',
+                            title: '发货地',
                         },
                         {
                             dataIndex: 'd',
-                            title: '品种',
+                            title: '收货地',
+                        },
+                        {
+                            dataIndex: 'id1',
+                            title: 'sku id',
                         },
                         {
                             dataIndex: 'e',
-                            title: '产区',
+                            title: 'sku品名',
                         },
                         {
                             dataIndex: 'f',
-                            title: '存储情况',
+                            title: '品类',
                         },
                         {
                             dataIndex: 'g',
-                            title: '加工情况',
+                            title: '产区',
                         },
                         {
                             dataIndex: 'h',
-                            title: '外包装',
+                            title: '品种',
                         },
                         {
                             dataIndex: 'i',
-                            title: '内包装',
+                            title: '存储情况',
                         },
                         {
                             dataIndex: 'j',
-                            title: '等级',
+                            title: '加工情况',
                         },
                         {
                             dataIndex: 'k',
-                            title: '品牌',
+                            title: '内包装',
                         },
                         {
                             dataIndex: 'l',
-                            title: '规格',
+                            title: '外包装',
                         },
                         {
                             dataIndex: 'm',
-                            title: '规格值',
+                            title: '实际规格值',
+                        },
+                        {
+                            dataIndex: 'n',
+                            title: '净重',
+                        },
+                        {
+                            dataIndex: 'number2',
+                            title: '订货数量',
+                        },
+                        {
+                            dataIndex: 'number3',
+                            title: '实际入库数量',
+                        },
+                        {
+                            dataIndex: 'date3',
+                            title: '采购日期',
+                        },
+                        {
+                            dataIndex: 'me',
+                            title: '采购人员',
                         },
                     ]}
                     dataSource={dataSrouce}
@@ -176,4 +215,4 @@ class PurchaseCommodity extends Component {
     }
 }
 
-export default PurchaseCommodity
+export default InventoryInRecord

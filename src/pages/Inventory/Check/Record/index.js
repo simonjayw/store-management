@@ -4,12 +4,11 @@ import { connect } from 'dva'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
-import ButtonGroup from '@/components/ButtonGroup'
 
-import { getCommodityListMOCK } from '../services'
+import { getCheckListMOCK } from '../../services'
 
 @connect(() => ({}))
-class PurchaseCommodity extends Component {
+class InventoryCheckRecord extends Component {
     state = {
         searchCondition: {}, // 搜索条件
         dataSrouce: [], // 表格数据
@@ -29,7 +28,7 @@ class PurchaseCommodity extends Component {
         const { pageNum, ...params } = parmas
         const { pagination, searchCondition } = this.state
 
-        getCommodityListMOCK({
+        getCheckListMOCK({
             size: pagination.pageSize,
             index: pageNum || pagination.current,
             ...searchCondition,
@@ -92,77 +91,105 @@ class PurchaseCommodity extends Component {
                 <SearchForm
                     data={[
                         {
-                            label: 'sku品名',
+                            label: '商品名称/编号',
                             type: 'input',
-                            key: 'sku',
+                            key: 'name',
+                        },
+                        {
+                            label: '状态',
+                            type: 'select',
+                            options: [{ key: 1, value: '选择1' }, { key: 2, value: '选择2' }],
+                            key: 'status',
                         },
                     ]}
                     buttonGroup={[{ onSearch: this.handleFormSearch }]}
                 />
-                <ButtonGroup
-                    secondary={[
-                        {
-                            text: '确定进货',
-                        },
-                    ]}
-                />
                 <BasicTable
                     columns={[
                         {
-                            title: 'sku id',
+                            dataIndex: 'id2',
+                            title: '商品批次 id',
+                        },
+                        {
                             dataIndex: 'id1',
-                        },
-                        {
-                            title: '商品tupian',
-                            dataIndex: 'a',
-                        },
-                        {
-                            title: 'sku品名',
-                            dataIndex: 'b',
-                        },
-                        {
-                            title: '品类',
-                            dataIndex: 'c',
-                        },
-                        {
-                            dataIndex: 'd',
-                            title: '品种',
+                            title: 'sku id',
                         },
                         {
                             dataIndex: 'e',
-                            title: '产区',
+                            title: 'sku品名',
                         },
                         {
                             dataIndex: 'f',
-                            title: '存储情况',
+                            title: '品类',
                         },
                         {
                             dataIndex: 'g',
-                            title: '加工情况',
+                            title: '品种',
                         },
                         {
                             dataIndex: 'h',
-                            title: '外包装',
+                            title: '产区',
                         },
                         {
                             dataIndex: 'i',
-                            title: '内包装',
+                            title: '存储情况',
                         },
                         {
                             dataIndex: 'j',
-                            title: '等级',
+                            title: '加工情况',
                         },
                         {
                             dataIndex: 'k',
-                            title: '品牌',
+                            title: '外包装',
                         },
                         {
                             dataIndex: 'l',
-                            title: '规格',
+                            title: '内包装',
                         },
                         {
                             dataIndex: 'm',
-                            title: '规格值',
+                            title: '实际规格值',
+                        },
+                        {
+                            dataIndex: 'n',
+                            title: '净重',
+                        },
+                        {
+                            dataIndex: 'date3',
+                            title: '采购日期',
+                        },
+                        {
+                            dataIndex: 'number2',
+                            title: '门店结算价',
+                        },
+                        {
+                            dataIndex: 'a',
+                            title: '门店售价',
+                        },
+                        {
+                            dataIndex: 'b',
+                            title: '入库库存',
+                        },
+                        {
+                            dataIndex: 'c',
+                            title: '期初库存',
+                        },
+                        {
+                            dataIndex: 'key-3',
+                            title: '期末库存',
+                        },
+                        {
+                            dataIndex: 'key-4',
+                            title: '当前库存',
+                        },
+                        {
+                            dataIndex: 'key-5',
+                            title: '上下架状态',
+                        },
+                        {
+                            dataIndex: 'oprate',
+                            type: 'oprate',
+                            title: '操作',
                         },
                     ]}
                     dataSource={dataSrouce}
@@ -176,4 +203,4 @@ class PurchaseCommodity extends Component {
     }
 }
 
-export default PurchaseCommodity
+export default InventoryCheckRecord
