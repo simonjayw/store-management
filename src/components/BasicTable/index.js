@@ -5,8 +5,6 @@ import moment from 'moment'
 
 import { NumberToThousands } from '@/utils/utils'
 
-import './index.less'
-
 class BasicTable extends Component {
     /**
      * 业务化的columns转换

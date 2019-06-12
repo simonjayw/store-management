@@ -4,6 +4,7 @@ import { connect } from 'dva'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
+import ButtonGroup from '@/components/ButtonGroup'
 
 import { getOrderListMOCK } from './services'
 
@@ -134,6 +135,13 @@ class OrderList extends Component {
                         },
                     ]}
                     buttonGroup={[{ onSearch: this.handleFormSearch }]}
+                />
+                <ButtonGroup
+                    secondary={[
+                        {
+                            text: '导出',
+                        },
+                    ]}
                 />
                 <BasicTable
                     columns={[

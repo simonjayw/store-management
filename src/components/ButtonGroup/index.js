@@ -114,8 +114,8 @@ class ButtonGroup extends Component {
 
 ButtonGroup.defaultProps = {
     align: 'right',
-    globalWidth: '180px',
-    globalSize: 'large',
+    globalWidth: 'auto',
+    globalSize: 'default',
     buttons: [],
     primary: [],
     secondary: [],
