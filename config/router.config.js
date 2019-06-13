@@ -188,7 +188,14 @@ export default [
                 name: '固定成本',
                 icon: 'dollar',
                 temp: true,
-                component: './WaitBuild',
+                routes: [
+                    {
+                        path: '/fixedcost/record',
+                        name: '固定成本',
+                        temp: true,
+                        component: './Fixedcost/Record',
+                    },
+                ],
             },
             {
                 path: '/statistics',
@@ -200,19 +207,19 @@ export default [
                         path: '/statistics/commodity',
                         name: '商品统计',
                         temp: true,
-                        component: './WaitBuild',
+                        component: './Statistics/Commodity',
                     },
                     {
                         path: '/statistics/store',
                         name: '门店统计',
                         temp: true,
-                        component: './WaitBuild',
+                        component: './Statistics/Store',
                     },
                     {
                         path: '/statistics/member',
                         name: '会员统计',
                         temp: true,
-                        component: './WaitBuild',
+                        component: './Statistics/Member',
                     },
                 ],
             },

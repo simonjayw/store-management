@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { Form, Input, Select, DatePicker, Button, Card } from 'antd'
+import { Form, Input, Select, DatePicker, Button, Card, Radio } from 'antd'
 import styles from './index.less'
 
 const { RangePicker } = DatePicker
@@ -73,6 +73,26 @@ class SearchForm extends Component {
         )
     }
 
+    // 生成Radiogroup
+    createRadiogroup = ({ label, key, options = [], ...props }) => {
+        const {
+            form: { getFieldDecorator },
+        } = this.props
+        return (
+            <Form.Item label={label} key={key}>
+                {getFieldDecorator(key)(
+                    <Radio.Group {...props}>
+                        {options.map(item => (
+                            <Radio.Button key={item.value} value={item.value}>
+                                {item.text}
+                            </Radio.Button>
+                        ))}
+                    </Radio.Group>
+                )}
+            </Form.Item>
+        )
+    }
+
     createForm = data => {
         const formEl = data.map(item => {
             let formElement = null
@@ -89,6 +109,9 @@ class SearchForm extends Component {
                     break
                 case 'rangepicker':
                     formElement = this.createRangePicker(item)
+                    break
+                case 'radiogroup':
+                    formElement = this.createRadiogroup(item)
                     break
                 default:
                     formElement = null
