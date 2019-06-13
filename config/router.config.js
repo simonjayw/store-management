@@ -233,6 +233,7 @@ export default [
                         path: '/setting/store',
                         name: '门店设置',
                         temp: true,
+                        component: './Setting/Store',
                     },
                 ],
             },
