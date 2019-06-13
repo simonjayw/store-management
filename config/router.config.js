@@ -247,7 +247,7 @@ export default [
                         path: '/authority/member',
                         name: '成员管理',
                         temp: true,
-                        component: './WaitBuild',
+                        component: './Authority/Member',
                     },
                 ],
             },
