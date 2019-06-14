@@ -10,7 +10,7 @@ import getPageTitle from '@/utils/getPageTitle'
 
 const copyright = (
     <Fragment>
-        Copyright <Icon type="copyright" /> 2019 锌财科技
+        Copyright <Icon type="copyright" /> 2019 门店管理
     </Fragment>
 )
 
@@ -41,10 +41,10 @@ class UserLayout extends Component {
                             <div className={styles.header}>
                                 <Link to="/">
                                     <img alt="logo" className={styles.logo} src={logo} />
-                                    <span className={styles.title}>广丰保理融资管理系统</span>
+                                    <span className={styles.title}>门店管理</span>
                                 </Link>
                             </div>
-                            <div className={styles.desc}>{/* 广丰保理融资管理系统 */}</div>
+                            <div className={styles.desc}>{/* 门店管理 */}</div>
                         </div>
                         {children}
                     </div>
