@@ -1,11 +1,13 @@
 import axios from 'axios'
 import { Modal } from 'antd'
-
-import { uuid, createSign, mainSite } from '@/utils/utils'
 import md5 from 'md5'
 
+import { uuid, createSign, mainSite } from '@/utils/utils'
+import { getUserToken, setUserToken } from './token'
+
 // const baseUrl = '/api'
-export const baseUrl = '//47.97.180.197:89'
+// export const baseUrl = '//47.97.180.197:89'
+export const baseUrl = '//admin.api.fresh.laoniutech.com'
 
 const codeMessage = {
     200: '服务器成功返回请求的数据。',
@@ -42,8 +44,12 @@ const checkStatus = response => {
 
 const instance = axios.create({
     baseURL: baseUrl,
-    // withCredentials: true,
-    // timeout: 20000,
+    withCredentials: true,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        // "Content-Type": "multipart/form-data",
+        Accept: 'application/json',
+    },
 })
 
 // 响应拦截器
@@ -56,7 +62,7 @@ instance.interceptors.response.use(
                 title: data.message || '请求超时',
                 okText: '前往登陆',
                 onOk: () => {
-                    localStorage.setItem('user_info', '')
+                    setUserToken('')
                     window.location = `${mainSite()}user/login`
                 },
             })
@@ -94,7 +100,7 @@ const createAPI = (url, method, config) => {
         params.sk = uuid()
         localStorage.setItem('uuId', params.sk)
     }
-    const userInfoStr = localStorage.getItem('user_info')
+    const userInfoStr = getUserToken()
     let localUk = ''
     if (userInfoStr) {
         const userInfo = JSON.parse(userInfoStr)

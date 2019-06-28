@@ -11,12 +11,12 @@ import { getTableMock } from '@/utils/mockData'
  * 入库管理 - 收货单列表
  */
 // 收货单列表
-export const getReceiveListMOCK = async () => {
-    return getTableMock()
-}
 export const getReceiveList = async params =>
-    createAPI('/logout', 'get', {
-        params: params || {},
+    createAPI('/logistics', 'get', {
+        params: {
+            t: 'merchant.orders',
+            ...params,
+        },
     })
 
 /**

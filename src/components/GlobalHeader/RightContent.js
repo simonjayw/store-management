@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Spin, Tag, Menu, Icon, Avatar } from 'antd'
+import { Tag, Menu, Icon, Avatar } from 'antd'
 import moment from 'moment'
 import groupBy from 'lodash/groupBy'
 // import NoticeIcon from '../NoticeIcon'
@@ -74,7 +74,7 @@ export default class GlobalHeaderRight extends PureComponent {
 
         const menu = (
             <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-                <Menu.Item disabled key="userCenter">
+                {/* <Menu.Item disabled key="userCenter">
                     <Icon type="user" />
                     用户中心
                 </Menu.Item>
@@ -82,7 +82,7 @@ export default class GlobalHeaderRight extends PureComponent {
                     <Icon type="setting" />
                     用户设置
                 </Menu.Item>
-                <Menu.Divider />
+                <Menu.Divider /> */}
                 <Menu.Item key="logout">
                     <Icon type="logout" />
                     登出
@@ -160,7 +160,23 @@ export default class GlobalHeaderRight extends PureComponent {
                         showViewMore
                     />
                 </NoticeIcon> */}
-                {currentUser.userName ? (
+                {
+                    <HeaderDropdown overlay={menu}>
+                        <span className={`${styles.action} ${styles.account}`}>
+                            <Avatar
+                                size="small"
+                                className={styles.avatar}
+                                // src={currentUser.avatar}
+                                icon="user"
+                                alt="avatar"
+                            />
+                            {currentUser.userName ? (
+                                <span className={styles.name}>{currentUser.userName}</span>
+                            ) : null}
+                        </span>
+                    </HeaderDropdown>
+                }
+                {/* {currentUser.userName ? (
                     <HeaderDropdown overlay={menu}>
                         <span className={`${styles.action} ${styles.account}`}>
                             <Avatar
@@ -175,7 +191,7 @@ export default class GlobalHeaderRight extends PureComponent {
                     </HeaderDropdown>
                 ) : (
                     <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
-                )}
+                )} */}
             </div>
         )
     }

@@ -125,7 +125,7 @@ class SearchForm extends Component {
     handleSearch = () => {
         const { onSearch } = this.props
         const values = this.getFormValues()
-
+        console.log(values)
         onSearch(values)
     }
 
@@ -140,6 +140,19 @@ class SearchForm extends Component {
     // 点击按钮
     handleCustomClick = (callback = () => {}) => {
         const values = this.getFormValues()
+
+        // TODO: 过滤没有用的字段
+        // eslint-disable-next-line no-restricted-syntax
+        for (const key in values) {
+            // eslint-disable-next-line no-prototype-builtins
+            if (values.hasOwnProperty(key)) {
+                const element = values[key]
+
+                if (element == null) {
+                    delete values[key]
+                }
+            }
+        }
 
         callback(values)
     }

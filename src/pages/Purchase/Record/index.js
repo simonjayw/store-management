@@ -4,8 +4,9 @@ import { connect } from 'dva'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
+import TableRenderImg from '@/components/TableRenderImg'
 
-import { getRecordListMOCK } from '../services'
+import { getRecordList } from '../services'
 
 @connect(() => ({}))
 class PurchaseRecord extends Component {
@@ -28,7 +29,7 @@ class PurchaseRecord extends Component {
         const { pageNum, ...params } = parmas
         const { pagination, searchCondition } = this.state
 
-        getRecordListMOCK({
+        getRecordList({
             size: pagination.pageSize,
             index: pageNum || pagination.current,
             ...searchCondition,
@@ -39,7 +40,7 @@ class PurchaseRecord extends Component {
                     dataSrouce: res.data,
                     pagination: {
                         ...pagination,
-                        total: res.pages.count,
+                        total: res.pages ? res.pages.count : 0,
                     },
                 })
             }
@@ -49,7 +50,6 @@ class PurchaseRecord extends Component {
     // 查询表单搜索
     handleFormSearch = values => {
         const { pagination } = this.state
-
         this.setState(
             {
                 searchCondition: values,
@@ -93,19 +93,18 @@ class PurchaseRecord extends Component {
                         {
                             label: 'sku品名',
                             type: 'input',
-                            key: 'sku',
+                            key: 'q',
                         },
                         {
                             label: '日期',
                             type: 'datepicker',
-                            options: [{ key: 1, value: '选择1' }, { key: 2, value: '选择2' }],
                             key: 'date',
                         },
                         {
                             label: '订货状态',
                             type: 'select',
                             key: 'status',
-                            options: [{ key: 1, value: '选择1' }, { key: 2, value: '选择2' }],
+                            options: [{ key: 0, value: '未发货' }, { key: 1, value: '已发货' }],
                         },
                     ]}
                     buttonGroup={[{ onSearch: this.handleFormSearch }]}
@@ -114,61 +113,61 @@ class PurchaseRecord extends Component {
                     columns={[
                         {
                             title: '订货单ID',
-                            dataIndex: 'id1',
+                            dataIndex: 'id',
                         },
                         {
                             title: '日期',
-                            dataIndex: 'date1',
+                            dataIndex: 'create_time',
                         },
                         {
                             title: '订货门店',
-                            dataIndex: 'amount',
-                            type: 'amount',
+                            dataIndex: 'merchant_name',
                         },
                         {
                             title: '商品图片',
-                            dataIndex: 'datecol',
-                            type: 'date',
+                            dataIndex: 'pictures',
+                            render: data => <TableRenderImg data={data} />,
                         },
                         {
-                            dataIndex: 'a',
+                            dataIndex: 'name',
                             title: 'sku品名',
                         },
                         {
-                            dataIndex: 'b',
+                            dataIndex: 'category_name',
                             title: '品类',
                         },
                         {
-                            dataIndex: 'c',
+                            dataIndex: 'variety_name',
                             title: '品种',
                         },
                         {
-                            dataIndex: 'd',
+                            dataIndex: 'region_name',
                             title: '产区',
                         },
                         {
-                            dataIndex: 'e',
+                            dataIndex: 'storage_name',
                             title: '存储情况',
                         },
                         {
-                            dataIndex: 'f',
+                            dataIndex: 'process_name',
                             title: '加工情况',
                         },
                         {
-                            dataIndex: 'g',
+                            dataIndex: 'packing_name_a',
                             title: '外包装',
                         },
                         {
-                            dataIndex: 'h',
+                            dataIndex: 'packing_name_b',
                             title: '内包装',
                         },
                         {
-                            dataIndex: 'i',
+                            dataIndex: 'quantity',
                             title: '进货数量',
                         },
                         {
-                            dataIndex: 'j',
+                            dataIndex: 'status',
                             title: '订货状态',
+                            render: status => (status === 0 ? '未发货' : '已发货'),
                         },
                     ]}
                     dataSource={dataSrouce}

@@ -2,10 +2,13 @@ import { routerRedux } from 'dva/router'
 import { stringify } from 'qs'
 import { getFakeCaptcha } from '@/services/api'
 import { setAuthority } from '@/utils/authority'
-import { loginLogin, loginLogOut } from '@/pages/User/services'
-import { setSession } from '@/utils/session'
+import { login, logout } from '@/pages/User/services'
+import { setUserToken } from '@/utils/token'
 import { getPageQuery } from '@/utils/utils'
 // import { reloadAuthorized } from '@/utils/Authorized'
+
+import md5 from 'md5'
+import { message } from 'antd'
 
 export default {
     namespace: 'login',
@@ -16,22 +19,18 @@ export default {
 
     effects: {
         *login({ payload }, { call, put }) {
-            const formData = new FormData()
-            formData.append('rememberMe', payload.rememberMe)
-            formData.append('username', payload.username)
-            formData.append('password', payload.password)
-            formData.append('validateCode', payload.validateCode)
-            const res = yield call(loginLogin, formData)
-            if (res && res.success) {
-                yield put({
-                    type: 'changeLoginStatus',
-                    payload: {
-                        status: 'ok',
-                    },
-                })
-                // Login successfully
-                setSession(res.data)
-                // reloadAuthorized()
+            const res = yield call(login, {
+                t: 'login',
+                mobile: payload.mobile,
+                password: md5(payload.password),
+            })
+            if (res && res.errcode === 0) {
+                const { data: userInfo } = res
+                setUserToken(JSON.stringify(userInfo.user))
+                yield message.success('登录成功!', 2)
+                // yield put(routerRedux.replace('/'))
+
+                // 重定向
                 const urlParams = new URL(window.location.href)
                 const params = getPageQuery()
                 let { redirect } = params
@@ -49,13 +48,6 @@ export default {
                 }
                 yield put(routerRedux.replace(redirect || '/'))
             }
-            // TODO: else 重新获取图形验证码
-
-            // const response = yield call(fakeAccountLogin, payload)
-            // yield put({
-            //     type: 'changeLoginStatus',
-            //     payload: response,
-            // })
         },
 
         *getCaptcha({ payload }, { call }) {
@@ -63,9 +55,12 @@ export default {
         },
 
         *logout(_, { put, call }) {
-            const res = yield call(loginLogOut)
-            if (res && res.success) {
-                setSession('')
+            const res = yield call(logout, {
+                t: 'logout',
+            })
+            if (res && res.errcode === 0) {
+                setUserToken('')
+                message.success('登出成功!', 2)
                 yield put({
                     type: 'changeLoginStatus',
                     payload: {

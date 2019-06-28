@@ -11,12 +11,21 @@ import { getTableMock } from '@/utils/mockData'
  * 进货商品
  */
 // 进货商品列表
-export const getCommodityListMOCK = async () => {
-    return getTableMock()
-}
 export const getCommodityList = async params =>
-    createAPI('/logout', 'get', {
-        params: params || {},
+    createAPI('/goods', 'get', {
+        params: {
+            t: 'merchant.skus',
+            ...params,
+        },
+    })
+
+// 进货操作
+export const commodityGoods = async params =>
+    createAPI('/goods', 'get', {
+        params: {
+            t: 'merchant.purchase',
+            ...params,
+        },
     })
 
 /**
@@ -24,12 +33,12 @@ export const getCommodityList = async params =>
  */
 
 // 进货记录列表
-export const getRecordListMOCK = async () => {
-    return getTableMock()
-}
 export const getRecordList = async params =>
-    createAPI('/logout', 'get', {
-        params: params || {},
+    createAPI('/goods', 'get', {
+        params: {
+            t: 'merchant.purchase.records',
+            ...params,
+        },
     })
 
 /**

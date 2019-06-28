@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-
+import { Modal, message } from 'antd'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
 import ButtonGroup from '@/components/ButtonGroup'
+import TableRenderImg from '@/components/TableRenderImg'
 
-import { getCommodityListMOCK } from '../services'
+import AddCommodity from './addCommodity'
+
+import { getCommodityList, commodityGoods } from '../services'
 
 @connect(() => ({}))
 class PurchaseCommodity extends Component {
@@ -18,6 +21,10 @@ class PurchaseCommodity extends Component {
             pageSize: 10,
             total: 0,
         }, // 表格分页
+
+        selectedRowsData: [],
+        showConfig: false,
+        configData: [],
     }
 
     componentDidMount() {
@@ -29,7 +36,7 @@ class PurchaseCommodity extends Component {
         const { pageNum, ...params } = parmas
         const { pagination, searchCondition } = this.state
 
-        getCommodityListMOCK({
+        getCommodityList({
             size: pagination.pageSize,
             index: pageNum || pagination.current,
             ...searchCondition,
@@ -40,7 +47,7 @@ class PurchaseCommodity extends Component {
                     dataSrouce: res.data,
                     pagination: {
                         ...pagination,
-                        total: res.pages.count,
+                        total: res.pages ? res.pages.count : 0,
                     },
                 })
             }
@@ -84,8 +91,53 @@ class PurchaseCommodity extends Component {
         )
     }
 
+    onChangeRowSelect = (_, selectedRows) => {
+        this.setState({
+            selectedRowsData: selectedRows,
+        })
+    }
+
+    hideConfig = () => {
+        this.setState({
+            showConfig: false,
+            configData: [],
+        })
+    }
+
+    // 确定进货 显示配置弹窗
+    handleCommodity = () => {
+        // TODO: 请选择需要采购的商品
+
+        const { selectedRowsData } = this.state
+
+        if (selectedRowsData.length === 0) {
+            message.warn('请选择需要采购的商品')
+            return
+        }
+
+        this.setState({
+            showConfig: true,
+            configData: selectedRowsData,
+        })
+    }
+
+    // 确认进货
+    handleConfirmConfig = result => {
+        const data = JSON.stringify(result)
+        commodityGoods({
+            // [skuid]: number
+            data,
+        }).then(res => {
+            if (res && res.errcode === 0) {
+                message.success('操作成功！')
+
+                this.hideConfig()
+            }
+        })
+    }
+
     render() {
-        const { dataSrouce, pagination } = this.state
+        const { dataSrouce, showConfig, configData, pagination } = this.state
 
         return (
             <PageHeaderWrapper>
@@ -94,7 +146,7 @@ class PurchaseCommodity extends Component {
                         {
                             label: 'sku品名',
                             type: 'input',
-                            key: 'sku',
+                            key: 'q',
                         },
                     ]}
                     buttonGroup={[{ onSearch: this.handleFormSearch }]}
@@ -103,6 +155,7 @@ class PurchaseCommodity extends Component {
                     secondary={[
                         {
                             text: '确定进货',
+                            onClick: this.handleCommodity,
                         },
                     ]}
                 />
@@ -110,67 +163,80 @@ class PurchaseCommodity extends Component {
                     columns={[
                         {
                             title: 'sku id',
-                            dataIndex: 'id1',
+                            dataIndex: 'skuid',
                         },
                         {
-                            title: '商品tupian',
-                            dataIndex: 'a',
+                            title: '商品图片',
+                            dataIndex: 'pictures',
+                            render: data => <TableRenderImg data={data} />,
                         },
                         {
                             title: 'sku品名',
-                            dataIndex: 'b',
+                            dataIndex: 'name',
                         },
                         {
                             title: '品类',
-                            dataIndex: 'c',
+                            dataIndex: 'category_name',
                         },
                         {
-                            dataIndex: 'd',
+                            dataIndex: 'variety_name',
                             title: '品种',
                         },
                         {
-                            dataIndex: 'e',
+                            dataIndex: 'region_name',
                             title: '产区',
                         },
                         {
-                            dataIndex: 'f',
+                            dataIndex: 'storage_name',
                             title: '存储情况',
                         },
                         {
-                            dataIndex: 'g',
+                            dataIndex: 'process_name',
                             title: '加工情况',
                         },
                         {
-                            dataIndex: 'h',
+                            dataIndex: 'packing_name_a',
                             title: '外包装',
                         },
                         {
-                            dataIndex: 'i',
+                            dataIndex: 'packing_name_b',
                             title: '内包装',
                         },
                         {
-                            dataIndex: 'j',
+                            dataIndex: 'levels',
                             title: '等级',
                         },
                         {
-                            dataIndex: 'k',
+                            dataIndex: 'brand_name',
                             title: '品牌',
                         },
                         {
-                            dataIndex: 'l',
+                            dataIndex: 'specification_name',
                             title: '规格',
                         },
                         {
-                            dataIndex: 'm',
+                            dataIndex: 'specification_value',
                             title: '规格值',
                         },
                     ]}
                     dataSource={dataSrouce}
+                    rowSelection={{
+                        onChange: this.onChangeRowSelect,
+                    }}
                     pagination={{
                         ...pagination,
                         onChange: this.handleChangePage,
                     }}
                 />
+                <Modal
+                    title="进货数量配置"
+                    visible={showConfig}
+                    onCancel={this.hideConfig}
+                    footer={null}
+                    destroyOnClose
+                >
+                    <AddCommodity onConfirm={this.handleConfirmConfig} data={configData} />
+                </Modal>
             </PageHeaderWrapper>
         )
     }

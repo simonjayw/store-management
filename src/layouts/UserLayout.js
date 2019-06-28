@@ -1,11 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'dva'
-import Link from 'umi/link'
 import { Icon } from 'antd'
 import GlobalFooter from '@/components/GlobalFooter'
 import DocumentTitle from 'react-document-title'
 import styles from './UserLayout.less'
-import logo from '../assets/logo.svg'
 import getPageTitle from '@/utils/getPageTitle'
 
 const copyright = (
@@ -36,18 +34,7 @@ class UserLayout extends Component {
             <DocumentTitle title={getPageTitle(pathname, breadcrumbNameMap)}>
                 <div className={styles.container}>
                     <div className={styles.lang} />
-                    <div className={styles.content}>
-                        <div className={styles.top}>
-                            <div className={styles.header}>
-                                <Link to="/">
-                                    <img alt="logo" className={styles.logo} src={logo} />
-                                    <span className={styles.title}>门店管理</span>
-                                </Link>
-                            </div>
-                            <div className={styles.desc}>{/* 门店管理 */}</div>
-                        </div>
-                        {children}
-                    </div>
+                    <div className={styles.content}>{children}</div>
                     <GlobalFooter copyright={copyright} />
                 </div>
             </DocumentTitle>

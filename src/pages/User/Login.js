@@ -1,74 +1,43 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Checkbox, Alert } from 'antd'
+import { Alert } from 'antd'
 import Login from '@/components/Login'
 
-import { getCaptchaUrl } from './services'
+import { getUserToken } from '@/utils/token'
 
 import styles from './Login.less'
 
-const { Tab, UserName, Password, GraphCaptcha, Submit } = Login
+const { UserName, Password, Submit } = Login
 
 @connect(({ login, loading }) => ({
     login,
-    submitting: loading.effects['login/login'],
+    loading: loading.effects['login/login'],
 }))
 class LoginPage extends Component {
     state = {
         type: 'account',
-        rememberMe: true,
-
-        ifFetchCaptcha: false,
-        captchaImg: `${getCaptchaUrl}&temp=3.14`,
     }
 
-    onTabChange = type => {
-        this.setState({ type })
-    }
-
-    onGetCaptcha = () => {
-        const timeTemp = Math.random()
-        this.setState({ ifFetchCaptcha: true })
-
-        // getCaptcha().then(res => {
-        // const reader = new FileReader()
-        // const blob = new Blob(res)
-        // reader.readAsDataURL(blob)
-        // const data = window.URL.createObjectURL(res)
-        // const captchaImg = `data:image/jpeg;base64,${encodeURI(res)}`
-        // console.log(captchaImg)
-        // this.setState({
-        //     ifFetchCaptcha: false,
-        //     captchaImg,
-        // })
-        // })
-        setTimeout(() => {
-            this.setState({
-                captchaImg: `${getCaptchaUrl}&temp=${timeTemp}`,
-                ifFetchCaptcha: false,
-            })
-        }, 500)
-    }
-
-    handleSubmit = (err, values) => {
-        const { rememberMe } = this.state
-        const { dispatch } = this.props
-
-        if (!err) {
-            dispatch({
-                type: 'login/login',
-                payload: {
-                    ...values,
-                    rememberMe,
-                },
-            })
+    componentDidMount() {
+        const { history } = this.props
+        const userInfoStr = getUserToken()
+        if (userInfoStr) {
+            history.replace('/')
         }
     }
 
-    changeAutoLogin = e => {
-        this.setState({
-            rememberMe: e.target.checked,
-        })
+    handleSubmit = (err, values) => {
+        if (!err) {
+            const { mobile, password } = values
+            const { dispatch } = this.props
+            dispatch({
+                type: 'login/login',
+                payload: {
+                    mobile,
+                    password,
+                },
+            })
+        }
     }
 
     renderMessage = content => (
@@ -76,11 +45,12 @@ class LoginPage extends Component {
     )
 
     render() {
-        const { login, submitting } = this.props
-        const { type, rememberMe, ifFetchCaptcha, captchaImg } = this.state
+        const { type } = this.state
+        const { loading } = this.props
 
         return (
             <div className={styles.main}>
+                <div className={styles.topTitle}>门店管理系统</div>
                 <Login
                     defaultActiveKey={type}
                     onTabChange={this.onTabChange}
@@ -89,65 +59,35 @@ class LoginPage extends Component {
                         this.loginForm = form
                     }}
                 >
-                    <Tab key="account" tab="账户密码登录">
-                        {login.status === 'error' &&
+                    {/* {login.status === 'error' &&
                             login.type === 'account' &&
                             !submitting &&
-                            this.renderMessage('账户或密码错误')}
-                        <UserName
-                            name="username"
-                            placeholder="用户名"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: '请输入用户名！',
-                                },
-                            ]}
-                        />
-                        <Password
-                            name="password"
-                            placeholder="密码"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: '请输入密码！',
-                                },
-                            ]}
-                            onPressEnter={e => {
-                                e.preventDefault()
-                                this.loginForm.validateFields(this.handleSubmit)
-                            }}
-                        />
-                        <GraphCaptcha
-                            name="validateCode"
-                            placeholder="图形验证码"
-                            onGetCaptcha={this.onGetCaptcha}
-                            getCaptchaSecondText={ifFetchCaptcha}
-                            getCaptchaButtonText={<img alt="图形验证码获取失败" src={captchaImg} />}
-                            rules={[
-                                {
-                                    required: true,
-                                    message: '请输入验证码',
-                                },
-                            ]}
-                        />
-                    </Tab>
-                    <div>
-                        <Checkbox checked={rememberMe} onChange={this.changeAutoLogin}>
-                            自动登录
-                        </Checkbox>
-                        {/* <a style={{ float: 'right' }} href="">忘记密码</a> */}
-                    </div>
-                    <Submit loading={submitting}>登录</Submit>
-                    {/* <div className={styles.other}>
-                        其他登录方式
-                        <Icon type="alipay-circle" className={styles.icon} theme="outlined" />
-                        <Icon type="taobao-circle" className={styles.icon} theme="outlined" />
-                        <Icon type="weibo-circle" className={styles.icon} theme="outlined" />
-                        <Link className={styles.register} to="/user/register">
-                            注册账户
-                        </Link>
-                    </div> */}
+                            this.renderMessage('账户或密码错误')} */}
+                    <UserName
+                        name="mobile"
+                        placeholder="请输入用户名"
+                        rules={[
+                            {
+                                required: true,
+                                message: '请输入用户名！',
+                            },
+                        ]}
+                    />
+                    <Password
+                        name="password"
+                        placeholder="请输入登录密码"
+                        rules={[
+                            {
+                                required: true,
+                                message: '请输入密码！',
+                            },
+                        ]}
+                        onPressEnter={e => {
+                            e.preventDefault()
+                            this.loginForm.validateFields(this.handleSubmit)
+                        }}
+                    />
+                    <Submit loading={loading}>登录</Submit>
                 </Login>
             </div>
         )

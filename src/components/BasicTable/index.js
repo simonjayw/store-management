@@ -87,8 +87,8 @@ class BasicTable extends Component {
                 dataSource={dataOption}
                 rowSelection={rowSelection}
                 pagination={pagination}
-                // scroll={{ x: 'max-content' }}
-                scroll={{ x: true }}
+                scroll={{ x: 'max-content' }}
+                // scroll={{ x: true }}
                 {...props}
             />
         )

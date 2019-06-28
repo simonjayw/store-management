@@ -6,7 +6,7 @@ import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
 import ButtonGroup from '@/components/ButtonGroup'
 
-import { getReceiveListMOCK } from '../../services'
+import { getReceiveList } from '../../services'
 
 @connect(() => ({}))
 class InventoryInReceive extends Component {
@@ -29,7 +29,7 @@ class InventoryInReceive extends Component {
         const { pageNum, ...params } = parmas
         const { pagination, searchCondition } = this.state
 
-        getReceiveListMOCK({
+        getReceiveList({
             size: pagination.pageSize,
             index: pageNum || pagination.current,
             ...searchCondition,
@@ -94,18 +94,23 @@ class InventoryInReceive extends Component {
                         {
                             label: '日期',
                             type: 'datepicker',
-                            key: 'date',
+                            key: 'ship_date',
                         },
                         {
                             label: '发货地',
                             type: 'input',
                             options: [{ key: 1, value: '选择1' }, { key: 2, value: '选择2' }],
-                            key: 'outPlace',
+                            key: 'ship_adr',
                         },
+                        // {
+                        //     label: '收货地',
+                        //     type: 'input',
+                        //     key: 'inPlace',
+                        // },
                         {
-                            label: '收货地',
+                            label: '车牌号码',
                             type: 'input',
-                            key: 'inPlace',
+                            key: 'vehicle_no',
                         },
                     ]}
                     buttonGroup={[{ onSearch: this.handleFormSearch }]}
