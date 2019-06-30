@@ -6,7 +6,8 @@ import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
 import ButtonGroup from '@/components/ButtonGroup'
 
-import { getReceiveList } from '../../services'
+import { message } from 'antd'
+import { getReceiveList /* , confrimReceive */ } from '../../services'
 
 @connect(() => ({}))
 class InventoryInReceive extends Component {
@@ -18,6 +19,8 @@ class InventoryInReceive extends Component {
             pageSize: 10,
             total: 0,
         }, // 表格分页
+
+        selectedData: [],
     }
 
     componentDidMount() {
@@ -84,6 +87,24 @@ class InventoryInReceive extends Component {
         )
     }
 
+    onChangeRowSelect = (_, selectedRows) => {
+        this.setState({
+            selectedData: selectedRows,
+        })
+    }
+
+    onConfirmReceive = () => {
+        const { selectedData } = this.state
+
+        if (selectedData.length === 0) {
+            message.warn('选择订单后再操作')
+            return
+        }
+        // TODO:
+        console.log(selectedData)
+        // confrimReceive()
+    }
+
     render() {
         const { dataSrouce, pagination } = this.state
 
@@ -99,14 +120,13 @@ class InventoryInReceive extends Component {
                         {
                             label: '发货地',
                             type: 'input',
-                            options: [{ key: 1, value: '选择1' }, { key: 2, value: '选择2' }],
                             key: 'ship_adr',
                         },
-                        // {
-                        //     label: '收货地',
-                        //     type: 'input',
-                        //     key: 'inPlace',
-                        // },
+                        {
+                            label: '收货地',
+                            type: 'input',
+                            key: 'mch_address',
+                        },
                         {
                             label: '车牌号码',
                             type: 'input',
@@ -119,6 +139,7 @@ class InventoryInReceive extends Component {
                     secondary={[
                         {
                             text: '确认入库',
+                            onClick: this.onConfirmReceive,
                         },
                     ]}
                 />
@@ -126,67 +147,66 @@ class InventoryInReceive extends Component {
                     columns={[
                         {
                             title: '发货日期',
-                            dataIndex: 'date1',
+                            dataIndex: 'ship_date',
                         },
                         {
                             title: '物流公司',
-                            dataIndex: 'a',
+                            dataIndex: 'logistics_name',
                         },
                         {
                             title: '车辆类型',
-                            dataIndex: 'b',
-                            type: 'amount',
+                            dataIndex: 'vehicle_type',
                         },
                         {
                             title: '车牌号码',
-                            dataIndex: 'number1',
+                            dataIndex: 'vehicle_no',
                         },
                         {
-                            dataIndex: 'c',
+                            dataIndex: 'ship_adr',
                             title: '发货地',
                         },
                         {
-                            dataIndex: 'd',
+                            dataIndex: 'mch_address',
                             title: '收货地',
                         },
                         {
-                            dataIndex: 'id1',
+                            dataIndex: 'skuid',
                             title: 'sku id',
                         },
                         {
-                            dataIndex: 'e',
+                            dataIndex: 'name',
                             title: 'sku品名',
                         },
                         {
-                            dataIndex: 'f',
+                            dataIndex: 'category_name',
                             title: '品类',
                         },
                         {
-                            dataIndex: 'g',
+                            dataIndex: 'region_name',
                             title: '产区',
                         },
                         {
-                            dataIndex: 'h',
+                            dataIndex: 'variety_name',
                             title: '品种',
                         },
                         {
-                            dataIndex: 'i',
+                            dataIndex: 'storage_name',
                             title: '存储情况',
                         },
                         {
-                            dataIndex: 'j',
+                            dataIndex: 'process_name',
                             title: '加工情况',
                         },
                         {
-                            dataIndex: 'k',
+                            dataIndex: 'packing_name_b',
                             title: '内包装',
                         },
                         {
-                            dataIndex: 'l',
+                            dataIndex: 'packing_name_a',
                             title: '外包装',
                         },
                         {
-                            dataIndex: 'm',
+                            dataIndex: 'specification_real',
                             title: '实际规格值',
                         },
                         {
@@ -194,7 +214,7 @@ class InventoryInReceive extends Component {
                             title: '净重',
                         },
                         {
-                            dataIndex: 'number2',
+                            dataIndex: 'quantity',
                             title: '订货数量',
                         },
                         {
@@ -202,19 +222,22 @@ class InventoryInReceive extends Component {
                             title: '预计到达时间',
                         },
                         {
-                            dataIndex: 'date3',
+                            dataIndex: 'buy_date',
                             title: '采购日期',
                         },
                         {
-                            dataIndex: 'me',
+                            dataIndex: 'buyer',
                             title: '采购人员',
                         },
                         {
-                            dataIndex: 'n',
+                            dataIndex: 'status',
                             title: '状态',
                         },
                     ]}
                     dataSource={dataSrouce}
+                    rowSelection={{
+                        onChange: this.onChangeRowSelect,
+                    }}
                     pagination={{
                         ...pagination,
                         onChange: this.handleChangePage,

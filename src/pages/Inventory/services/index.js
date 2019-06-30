@@ -12,9 +12,17 @@ import { getTableMock } from '@/utils/mockData'
  */
 // 收货单列表
 export const getReceiveList = async params =>
-    createAPI('/logistics', 'get', {
+    createAPI('/goods', 'get', {
         params: {
-            t: 'merchant.orders',
+            t: 'merchant.receive.skus',
+            ...params,
+        },
+    })
+// 收货操作
+export const confrimReceive = async params =>
+    createAPI('/goods', 'get', {
+        params: {
+            t: 'merchant.receive',
             ...params,
         },
     })
