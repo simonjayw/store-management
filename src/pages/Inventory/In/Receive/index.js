@@ -100,7 +100,7 @@ class InventoryInReceive extends Component {
             message.warn('选择订单后再操作')
             return
         }
-        // TODO: 一个收货单对应多个货物，这里拍扁了
+        // 一个收货单对应多个货物，这里拍扁了
         console.log(selectedData)
         // confrimReceive()
     }
