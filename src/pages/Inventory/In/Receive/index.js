@@ -122,11 +122,11 @@ class InventoryInReceive extends Component {
                             type: 'input',
                             key: 'ship_adr',
                         },
-                        {
-                            label: '收货地',
-                            type: 'input',
-                            key: 'mch_address',
-                        },
+                        // {
+                        //     label: '收货地',
+                        //     type: 'input',
+                        //     key: 'mch_address',
+                        // },
                         {
                             label: '车牌号码',
                             type: 'input',
@@ -162,7 +162,7 @@ class InventoryInReceive extends Component {
                             dataIndex: 'vehicle_no',
                         },
                         {
-                            dataIndex: 'ship_adr',
+                            dataIndex: 'supplier_address',
                             title: '发货地',
                         },
                         {
@@ -210,7 +210,7 @@ class InventoryInReceive extends Component {
                             title: '实际规格值',
                         },
                         {
-                            dataIndex: 'nn',
+                            dataIndex: 'weight_net',
                             title: '净重',
                         },
                         {
@@ -218,7 +218,7 @@ class InventoryInReceive extends Component {
                             title: '订货数量',
                         },
                         {
-                            dataIndex: 'date2',
+                            dataIndex: 'arrive_date',
                             title: '预计到达时间',
                         },
                         {
@@ -232,6 +232,7 @@ class InventoryInReceive extends Component {
                         {
                             dataIndex: 'status',
                             title: '状态',
+                            render: data => (data === 0 ? '待收货' : '已收货'),
                         },
                     ]}
                     dataSource={dataSrouce}
