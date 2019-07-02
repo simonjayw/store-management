@@ -31,12 +31,12 @@ export const confrimReceive = async params =>
  * 入库管理 - 入库单列表
  */
 // 入库单列表
-export const getInListMOCK = async () => {
-    return getTableMock()
-}
 export const getInList = async params =>
-    createAPI('/logout', 'get', {
-        params: params || {},
+    createAPI('/goods', 'get', {
+        params: {
+            t: 'merchant.receive.records',
+            ...params,
+        },
     })
 
 /**

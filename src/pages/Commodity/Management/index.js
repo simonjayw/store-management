@@ -5,7 +5,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
 
-import { getComodityListMOCK } from './services'
+import { getComodityList } from '../services'
 
 @connect(() => ({}))
 class CommodityManagement extends Component {
@@ -28,7 +28,7 @@ class CommodityManagement extends Component {
         const { pageNum, ...params } = parmas
         const { pagination, searchCondition } = this.state
 
-        getComodityListMOCK({
+        getComodityList({
             size: pagination.pageSize,
             index: pageNum || pagination.current,
             ...searchCondition,
@@ -93,12 +93,12 @@ class CommodityManagement extends Component {
                         {
                             label: 'sku品名/批次ID',
                             type: 'input',
-                            key: 'id',
+                            key: 'q',
                         },
                         {
                             label: '状态',
                             type: 'select',
-                            options: [{ key: 0, value: '上架' }, { key: 1, value: '下架' }],
+                            options: [{ key: 0, value: '下架' }, { key: 1, value: '上架' }],
                             key: 'status',
                         },
                     ]}
@@ -108,88 +108,88 @@ class CommodityManagement extends Component {
                     columns={[
                         {
                             title: '商品批次 id',
-                            dataIndex: 'id1',
+                            dataIndex: 'serial_no',
                         },
                         {
                             title: 'sku id',
-                            dataIndex: 'id2',
+                            dataIndex: 'skuid',
                         },
                         {
                             title: 'sku品名',
-                            dataIndex: 'a',
+                            dataIndex: 'name',
                         },
                         {
                             title: '别名',
-                            dataIndex: 'b',
+                            dataIndex: 'alias',
                         },
                         {
-                            dataIndex: 'c',
+                            dataIndex: 'category_name',
                             title: '品类',
                         },
                         {
-                            dataIndex: 'd',
+                            dataIndex: 'variety_name',
                             title: '品种',
                         },
                         {
-                            dataIndex: 'e',
+                            dataIndex: 'region_name',
                             title: '产区',
                         },
                         {
-                            dataIndex: 'f',
+                            dataIndex: 'storage_name',
                             title: '存储情况',
                         },
                         {
-                            dataIndex: 'g',
+                            dataIndex: 'process_name',
                             title: '加工情况',
                         },
                         {
-                            dataIndex: 'h',
+                            dataIndex: 'packing_name_a',
                             title: '外包装',
                         },
                         {
-                            dataIndex: 'i',
+                            dataIndex: 'packing_name_b',
                             title: '内包装',
                         },
                         {
-                            dataIndex: 'j',
+                            dataIndex: 'specification_real',
                             title: '实际规格值',
                         },
                         {
-                            dataIndex: 'k',
+                            dataIndex: 'weight_net',
                             title: '净重',
                         },
                         {
-                            dataIndex: 'date1',
+                            dataIndex: 'buy_date',
                             title: '采购日期',
                         },
                         {
-                            dataIndex: 'number1',
+                            dataIndex: 'price_settlement',
                             title: '门店结算价',
                         },
                         {
-                            dataIndex: 'number2',
+                            dataIndex: 'price_sale',
                             title: '门店售价',
                         },
                         {
-                            dataIndex: 'number3',
+                            dataIndex: 'stock_initial',
                             title: '入库库存',
                         },
                         {
-                            dataIndex: 'number4',
+                            dataIndex: 'stock_total',
                             title: '期初库存',
                         },
                         {
-                            width: 100,
-                            dataIndex: 'number5',
+                            dataIndex: 'stock_count',
                             title: '期末库存',
                         },
                         {
-                            dataIndex: 'number6',
+                            dataIndex: 'stock_now',
                             title: '当前库存',
                         },
                         {
-                            dataIndex: 'n',
+                            dataIndex: 'status',
                             title: '上下架状态',
+                            render: v => (v === 0 ? '下架' : '上架'),
                         },
                         {
                             type: 'oprate',

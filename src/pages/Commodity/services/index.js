@@ -1,5 +1,4 @@
 import createAPI from '@/utils/createAPI'
-import { getTableMock } from '@/utils/mockData'
 
 // export const loginLogOut = async params => {
 //     return createAPI(`${baseUrl}/logout`, 'get', {
@@ -7,11 +6,11 @@ import { getTableMock } from '@/utils/mockData'
 //     })
 // }
 
-export const getComodityListMOCK = async () => {
-    return getTableMock()
-}
-
+// eslint-disable-next-line import/prefer-default-export
 export const getComodityList = async params =>
-    createAPI('/logout', 'get', {
-        params: params || {},
+    createAPI('/goods', 'get', {
+        params: {
+            t: 'merchant.receive.records',
+            ...params,
+        },
     })

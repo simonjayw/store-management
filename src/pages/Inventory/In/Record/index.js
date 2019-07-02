@@ -5,7 +5,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
 
-import { getInListMOCK } from '../../services'
+import { getInList } from '../../services'
 
 @connect(() => ({}))
 class InventoryInRecord extends Component {
@@ -28,7 +28,7 @@ class InventoryInRecord extends Component {
         const { pageNum, ...params } = parmas
         const { pagination, searchCondition } = this.state
 
-        getInListMOCK({
+        getInList({
             size: pagination.pageSize,
             index: pageNum || pagination.current,
             ...searchCondition,
@@ -98,13 +98,12 @@ class InventoryInRecord extends Component {
                         {
                             label: '发货地',
                             type: 'input',
-                            options: [{ key: 1, value: '选择1' }, { key: 2, value: '选择2' }],
-                            key: 'outPlace',
+                            key: 'supplier_address',
                         },
                         {
                             label: '收货地',
                             type: 'input',
-                            key: 'inPlace',
+                            key: 'mch_address',
                         },
                     ]}
                     buttonGroup={[{ onSearch: this.handleFormSearch }]}
@@ -113,94 +112,95 @@ class InventoryInRecord extends Component {
                     columns={[
                         {
                             title: '入库日期',
-                            dataIndex: 'aa',
+                            // TODO: 确认
+                            dataIndex: 'receive_time',
                         },
                         {
                             title: '收货员',
-                            dataIndex: 'dd',
+                            dataIndex: 'operator',
                         },
                         {
                             title: '发货日期',
-                            dataIndex: 'date1',
+                            dataIndex: 'ship_date',
                         },
                         {
                             title: '物流公司',
-                            dataIndex: 'a',
+                            dataIndex: 'logistics_name',
                         },
                         {
                             title: '车辆类型',
-                            dataIndex: 'b',
+                            dataIndex: 'vehicle_type',
                         },
                         {
                             title: '车牌号码',
-                            dataIndex: 'number1',
+                            dataIndex: 'vehicle_no',
                         },
                         {
-                            dataIndex: 'c',
+                            dataIndex: 'supplier_address',
                             title: '发货地',
                         },
                         {
-                            dataIndex: 'd',
+                            dataIndex: 'mch_address',
                             title: '收货地',
                         },
                         {
-                            dataIndex: 'id1',
+                            dataIndex: 'skuid',
                             title: 'sku id',
                         },
                         {
-                            dataIndex: 'e',
+                            dataIndex: 'name',
                             title: 'sku品名',
                         },
                         {
-                            dataIndex: 'f',
+                            dataIndex: 'category_name',
                             title: '品类',
                         },
                         {
-                            dataIndex: 'g',
+                            dataIndex: 'region_name',
                             title: '产区',
                         },
                         {
-                            dataIndex: 'h',
+                            dataIndex: 'variety_name',
                             title: '品种',
                         },
                         {
-                            dataIndex: 'i',
+                            dataIndex: 'storage_name',
                             title: '存储情况',
                         },
                         {
-                            dataIndex: 'j',
+                            dataIndex: 'process_name',
                             title: '加工情况',
                         },
                         {
-                            dataIndex: 'k',
+                            dataIndex: 'packing_name_b',
                             title: '内包装',
                         },
                         {
-                            dataIndex: 'l',
+                            dataIndex: 'packing_name_a',
                             title: '外包装',
                         },
                         {
-                            dataIndex: 'm',
+                            dataIndex: 'specification_real',
                             title: '实际规格值',
                         },
                         {
-                            dataIndex: 'n',
+                            dataIndex: 'weight_net',
                             title: '净重',
                         },
                         {
-                            dataIndex: 'number2',
+                            dataIndex: 'quantity_original',
                             title: '订货数量',
                         },
                         {
-                            dataIndex: 'number3',
+                            dataIndex: 'quantity_receive',
                             title: '实际入库数量',
                         },
                         {
-                            dataIndex: 'date3',
+                            dataIndex: 'buy_date',
                             title: '采购日期',
                         },
                         {
-                            dataIndex: 'me',
+                            dataIndex: 'buyer',
                             title: '采购人员',
                         },
                     ]}
