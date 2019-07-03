@@ -4,8 +4,10 @@ import { connect } from 'dva'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
+import { message } from 'antd'
+import CheckModal from './CheckModal'
 
-import { getCheckListMOCK } from '../../services'
+import { getCheckList, checkInventory } from '../../services'
 
 @connect(() => ({}))
 class InventoryCheckRecord extends Component {
@@ -17,6 +19,9 @@ class InventoryCheckRecord extends Component {
             pageSize: 10,
             total: 0,
         }, // 表格分页
+
+        visible: false,
+        record: {},
     }
 
     componentDidMount() {
@@ -28,7 +33,7 @@ class InventoryCheckRecord extends Component {
         const { pageNum, ...params } = parmas
         const { pagination, searchCondition } = this.state
 
-        getCheckListMOCK({
+        getCheckList({
             size: pagination.pageSize,
             index: pageNum || pagination.current,
             ...searchCondition,
@@ -83,8 +88,32 @@ class InventoryCheckRecord extends Component {
         )
     }
 
+    handleCancelCheck = () => {
+        this.setState({
+            visible: false,
+            record: {},
+        })
+    }
+
+    handleShowCheck = record => {
+        this.setState({
+            visible: true,
+            record,
+        })
+    }
+
+    handleSaveCheck = value => {
+        checkInventory(value).then(res => {
+            if (res && res.errcode === 0) {
+                message.success('操作成功！')
+                this.handleCancelCheck()
+                this.fetchData()
+            }
+        })
+    }
+
     render() {
-        const { dataSrouce, pagination } = this.state
+        const { dataSrouce, pagination, visible, record } = this.state
 
         return (
             <PageHeaderWrapper>
@@ -93,12 +122,12 @@ class InventoryCheckRecord extends Component {
                         {
                             label: '商品名称/编号',
                             type: 'input',
-                            key: 'name',
+                            key: 'q',
                         },
                         {
                             label: '状态',
                             type: 'select',
-                            options: [{ key: 1, value: '选择1' }, { key: 2, value: '选择2' }],
+                            options: [{ key: 0, value: '下架' }, { key: 1, value: '上架' }],
                             key: 'status',
                         },
                     ]}
@@ -107,89 +136,94 @@ class InventoryCheckRecord extends Component {
                 <BasicTable
                     columns={[
                         {
-                            dataIndex: 'id2',
+                            dataIndex: 'serial_no',
                             title: '商品批次 id',
                         },
                         {
-                            dataIndex: 'id1',
+                            dataIndex: 'skuid',
                             title: 'sku id',
                         },
                         {
-                            dataIndex: 'e',
+                            dataIndex: 'name',
                             title: 'sku品名',
                         },
                         {
-                            dataIndex: 'f',
+                            dataIndex: 'category_name',
                             title: '品类',
                         },
                         {
-                            dataIndex: 'g',
+                            dataIndex: 'variety_name',
                             title: '品种',
                         },
                         {
-                            dataIndex: 'h',
+                            dataIndex: 'region_name',
                             title: '产区',
                         },
                         {
-                            dataIndex: 'i',
+                            dataIndex: 'storage_name',
                             title: '存储情况',
                         },
                         {
-                            dataIndex: 'j',
+                            dataIndex: 'process_name',
                             title: '加工情况',
                         },
                         {
-                            dataIndex: 'k',
+                            dataIndex: 'packing_name_a',
                             title: '外包装',
                         },
                         {
-                            dataIndex: 'l',
+                            dataIndex: 'packing_name_b',
                             title: '内包装',
                         },
                         {
-                            dataIndex: 'm',
+                            dataIndex: 'specification_real',
                             title: '实际规格值',
                         },
                         {
-                            dataIndex: 'n',
+                            dataIndex: 'weight_net',
                             title: '净重',
                         },
                         {
-                            dataIndex: 'date3',
+                            dataIndex: 'buy_date',
                             title: '采购日期',
                         },
                         {
-                            dataIndex: 'number2',
+                            dataIndex: 'price_settlement',
                             title: '门店结算价',
                         },
                         {
-                            dataIndex: 'a',
+                            dataIndex: 'price_sale',
                             title: '门店售价',
                         },
                         {
-                            dataIndex: 'b',
+                            dataIndex: 'stock_initial',
                             title: '入库库存',
                         },
                         {
-                            dataIndex: 'c',
+                            dataIndex: 'stock_total',
                             title: '期初库存',
                         },
                         {
-                            dataIndex: 'key-3',
+                            dataIndex: 'stock_count',
                             title: '期末库存',
                         },
                         {
-                            dataIndex: 'key-4',
+                            dataIndex: 'stock_now',
                             title: '当前库存',
                         },
                         {
-                            dataIndex: 'key-5',
+                            dataIndex: 'status',
                             title: '上下架状态',
+                            render: v => (v === 0 ? '下架' : '上架'),
                         },
                         {
-                            dataIndex: 'oprate',
                             type: 'oprate',
-                            title: '操作',
+                            buttons: [
+                                {
+                                    text: '库存盘点',
+                                    onClick: this.handleShowCheck,
+                                },
+                            ],
                         },
                     ]}
                     dataSource={dataSrouce}
@@ -197,6 +231,12 @@ class InventoryCheckRecord extends Component {
                         ...pagination,
                         onChange: this.handleChangePage,
                     }}
+                />
+                <CheckModal
+                    visible={visible}
+                    onCancel={this.handleCancelCheck}
+                    onSave={this.handleSaveCheck}
+                    data={record}
                 />
             </PageHeaderWrapper>
         )

@@ -1,5 +1,4 @@
 import createAPI from '@/utils/createAPI'
-import { getTableMock } from '@/utils/mockData'
 
 // export const loginLogOut = async params => {
 //     return createAPI(`${baseUrl}/logout`, 'get', {
@@ -43,10 +42,18 @@ export const getInList = async params =>
  * 库存盘点 - 门店商品列表
  */
 // 门店商品列表
-export const getCheckListMOCK = async () => {
-    return getTableMock()
-}
 export const getCheckList = async params =>
-    createAPI('/logout', 'get', {
-        params: params || {},
+    createAPI('/goods', 'get', {
+        params: {
+            t: 'merchant.receive.records',
+            ...params,
+        },
+    })
+
+export const checkInventory = async params =>
+    createAPI('/goods', 'get', {
+        params: {
+            t: 'merchant.stock.count',
+            ...params,
+        },
     })

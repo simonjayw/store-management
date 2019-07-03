@@ -111,8 +111,7 @@ class InventoryInRecord extends Component {
                 <BasicTable
                     columns={[
                         {
-                            title: '入库日期',
-                            // TODO: 确认
+                            title: '收货日期',
                             dataIndex: 'receive_time',
                         },
                         {
