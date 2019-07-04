@@ -187,9 +187,9 @@ class CommodityManagement extends Component {
                             title: '当前库存',
                         },
                         {
-                            dataIndex: 'status',
+                            dataIndex: 'status_desc',
                             title: '上下架状态',
-                            render: v => (v === 0 ? '下架' : '上架'),
+                            // render: v => (v === 0 ? '下架' : '上架'),
                         },
                         {
                             type: 'oprate',
