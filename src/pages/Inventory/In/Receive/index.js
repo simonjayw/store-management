@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
+import { message, Modal } from 'antd'
 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
 import ButtonGroup from '@/components/ButtonGroup'
+import ConfirmModal from './ConfirmModal'
 
-import { message } from 'antd'
-import { getReceiveList /* , confrimReceive */ } from '../../services'
+import { getReceiveList, confrimReceive } from '../../services'
 
 @connect(() => ({}))
 class InventoryInReceive extends Component {
@@ -21,6 +22,9 @@ class InventoryInReceive extends Component {
         }, // 表格分页
 
         selectedData: [],
+        selectedRowKeys: [],
+        showConfig: false,
+        configData: [],
     }
 
     componentDidMount() {
@@ -45,6 +49,8 @@ class InventoryInReceive extends Component {
                         ...pagination,
                         total: res.pages.count,
                     },
+                    selectedData: [],
+                    selectedRowKeys: [],
                 })
             }
         })
@@ -87,9 +93,17 @@ class InventoryInReceive extends Component {
         )
     }
 
-    onChangeRowSelect = (_, selectedRows) => {
+    onChangeRowSelect = (selectedRowKeys, selectedRows) => {
         this.setState({
             selectedData: selectedRows,
+            selectedRowKeys,
+        })
+    }
+
+    hideConfig = () => {
+        this.setState({
+            showConfig: false,
+            configData: [],
         })
     }
 
@@ -100,13 +114,28 @@ class InventoryInReceive extends Component {
             message.warn('选择订单后再操作')
             return
         }
-        // 一个收货单对应多个货物，这里拍扁了
-        console.log(selectedData)
-        // confrimReceive()
+        this.setState({
+            showConfig: true,
+            configData: selectedData,
+        })
+    }
+
+    // 确认收获
+    handleConfirmConfig = result => {
+        confrimReceive({
+            ...result,
+        }).then(res => {
+            if (res && res.errcode === 0) {
+                message.success('操作成功！')
+
+                this.hideConfig()
+                this.fetchData()
+            }
+        })
     }
 
     render() {
-        const { dataSrouce, pagination } = this.state
+        const { dataSrouce, pagination, showConfig, configData, selectedRowKeys } = this.state
 
         return (
             <PageHeaderWrapper>
@@ -238,12 +267,23 @@ class InventoryInReceive extends Component {
                     dataSource={dataSrouce}
                     rowSelection={{
                         onChange: this.onChangeRowSelect,
+                        selectedRowKeys,
                     }}
                     pagination={{
                         ...pagination,
                         onChange: this.handleChangePage,
                     }}
                 />
+                <Modal
+                    title="收货数量配置"
+                    visible={showConfig}
+                    onCancel={this.hideConfig}
+                    footer={null}
+                    width={900}
+                    destroyOnClose
+                >
+                    <ConfirmModal onConfirm={this.handleConfirmConfig} data={configData} />
+                </Modal>
             </PageHeaderWrapper>
         )
     }

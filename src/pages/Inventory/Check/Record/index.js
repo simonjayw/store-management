@@ -127,7 +127,7 @@ class InventoryCheckRecord extends Component {
                         {
                             label: '状态',
                             type: 'select',
-                            options: [{ key: 0, value: '下架' }, { key: 1, value: '上架' }],
+                            options: [{ key: 0, value: '已下架' }, { key: 1, value: '已上架' }],
                             key: 'status',
                         },
                     ]}
@@ -212,9 +212,8 @@ class InventoryCheckRecord extends Component {
                             title: '当前库存',
                         },
                         {
-                            dataIndex: 'status',
+                            dataIndex: 'status_desc',
                             title: '上下架状态',
-                            render: v => (v === 0 ? '下架' : '上架'),
                         },
                         {
                             type: 'oprate',
