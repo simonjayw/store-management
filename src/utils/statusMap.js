@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/prefer-default-export
-export const STATUS_MAP = [
+export const INVNTORY_STATUS = [
     {
         key: -1,
         name: '删除',

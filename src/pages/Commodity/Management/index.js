@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 
+import { Switch, Modal, message } from 'antd'
+
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
+import SetModal from './setModal'
 
-import { Modal } from 'antd'
-import { getComodityList } from '../services'
+import { getComodityList, changeComodityStatus, updateComodityMessage } from '../services'
 
 @connect(() => ({}))
 class CommodityManagement extends Component {
@@ -18,6 +20,9 @@ class CommodityManagement extends Component {
             pageSize: 10,
             total: 0,
         }, // 表格分页
+
+        setRecord: {},
+        setModal: false,
     }
 
     componentDidMount() {
@@ -84,6 +89,43 @@ class CommodityManagement extends Component {
         )
     }
 
+    onShowSetModal = record => {
+        this.setState({
+            setModal: true,
+            setRecord: record,
+        })
+    }
+
+    onHideSetModal = () => {
+        this.setState({
+            setModal: false,
+            setRecord: {},
+        })
+    }
+
+    onConfirmSet = data => {
+        updateComodityMessage(data).then(res => {
+            if (res && res.errcode === 0) {
+                message.success('修改成功')
+                this.onHideSetModal()
+                this.fetchData()
+            }
+        })
+    }
+
+    handleChangeStatus = record => {
+        changeComodityStatus({
+            serial_no: record.serial_no,
+        }).then(res => {
+            if (res && res.errcode === 0) {
+                message.success('操作成功')
+
+                this.fetchData()
+            }
+        })
+    }
+
+    // 尾货
     onGenereteTail = () => {
         Modal.warn({
             title: '提示',
@@ -92,7 +134,7 @@ class CommodityManagement extends Component {
     }
 
     render() {
-        const { dataSrouce, pagination } = this.state
+        const { dataSrouce, pagination, setRecord, setModal } = this.state
 
         return (
             <PageHeaderWrapper>
@@ -195,8 +237,18 @@ class CommodityManagement extends Component {
                             title: '当前库存',
                         },
                         {
-                            dataIndex: 'status_desc',
+                            dataIndex: 'status',
                             title: '上下架状态',
+                            render: (v, record) => {
+                                return (
+                                    <Switch
+                                        checked={v !== 0}
+                                        checkedChildren="上架"
+                                        unCheckedChildren="下架"
+                                        onChange={() => this.handleChangeStatus(record)}
+                                    />
+                                )
+                            },
                             // render: v => (v === 0 ? '下架' : '上架'),
                         },
                         {
@@ -205,6 +257,7 @@ class CommodityManagement extends Component {
                             buttons: [
                                 {
                                     text: '售价/别名',
+                                    onClick: this.onShowSetModal,
                                 },
                                 {
                                     text: '生成尾货',
@@ -218,6 +271,12 @@ class CommodityManagement extends Component {
                         ...pagination,
                         onChange: this.handleChangePage,
                     }}
+                />
+                <SetModal
+                    record={setRecord}
+                    visible={setModal}
+                    onCancel={this.onHideSetModal}
+                    onConfirm={this.onConfirmSet}
                 />
             </PageHeaderWrapper>
         )

@@ -8,7 +8,7 @@ import BasicTable from '@/components/BasicTable'
 import ButtonGroup from '@/components/ButtonGroup'
 import ConfirmModal from './ConfirmModal'
 
-import { STATUS_MAP } from './statusMap'
+import { INVNTORY_STATUS } from '@/utils/statusMap'
 import { getReceiveList, confrimReceive } from '../../services'
 
 @connect(() => ({}))
@@ -264,7 +264,7 @@ class InventoryInReceive extends Component {
                             title: '状态',
                             render: sat => {
                                 let t = ''
-                                STATUS_MAP.forEach(item => {
+                                INVNTORY_STATUS.forEach(item => {
                                     if (item.key === sat) {
                                         t = item.name
                                     }

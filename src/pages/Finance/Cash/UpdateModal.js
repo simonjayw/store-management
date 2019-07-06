@@ -4,11 +4,12 @@ import moment from 'moment'
 import { generateFormItem } from './help'
 
 @Form.create()
-class AddModal extends Component {
+class UpdateModal extends Component {
     handleConfirm = () => {
         const {
             onOk,
             form: { validateFields },
+            record,
         } = this.props
         validateFields((error, values) => {
             if (!error) {
@@ -17,11 +18,9 @@ class AddModal extends Component {
                     if (values[key] instanceof moment) {
                         values[key] = moment(values[key]).format('YYYY-MM-DD HH:mm:ss')
                     }
-                    if (!values[key]) {
-                        delete values[key]
-                    }
                 })
-                onOk(values)
+                const res = Object.assign({ id: record.id }, values)
+                onOk(res)
             }
         })
     }
@@ -30,20 +29,21 @@ class AddModal extends Component {
         const {
             form: { getFieldDecorator },
             fields,
+            record,
         } = this.props
 
         return (
             <Fragment>
                 {fields.map((item, index) => {
                     const fieldsOptions = {
-                        initialValue: item.default_value,
+                        initialValue: record[item.field_name],
                     }
                     const formItemStyle = {}
 
                     // 正对 日期处理
                     if (item.field_type === 'date') {
-                        fieldsOptions.initialValue = item.default_value
-                            ? moment(new Date(item.default_value))
+                        fieldsOptions.initialValue = record[item.field_name]
+                            ? moment(new Date(record[item.field_name]))
                             : null
                     }
                     if (item.hidden === 1) {
@@ -61,7 +61,7 @@ class AddModal extends Component {
                             style={formItemStyle}
                         >
                             {getFieldDecorator(item.field_name, fieldsOptions)(
-                                generateFormItem(item)
+                                generateFormItem(item, true)
                             )}
                         </Form.Item>
                     )
@@ -79,7 +79,7 @@ class AddModal extends Component {
                 onCancel={onCancel}
                 onOk={this.handleConfirm}
                 destroyOnClose
-                title="添加"
+                title="更新"
             >
                 <Form>{this.generateForm()}</Form>
             </Modal>
@@ -87,4 +87,4 @@ class AddModal extends Component {
     }
 }
 
-export default AddModal
+export default UpdateModal

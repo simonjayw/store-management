@@ -137,7 +137,7 @@ export default [
                             },
                             {
                                 path: '/operation/ad/limit',
-                                name: '限时抢购(去门店)',
+                                name: '限时抢购',
                                 component: './Operation/Ad/Limit',
                             },
                         ],

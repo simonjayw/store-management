@@ -32,11 +32,21 @@ export const addDynamicData = async params =>
     })
 
 // 删除接口
-export const updateDynamicData = async params =>
+export const deleteDynamicData = async params =>
     createAPI('/configuration', 'get', {
         params: {
             t: 'status',
             action: 'delete',
+            ...params,
+        },
+    })
+
+// 禁用接口
+export const disableDynamicData = async params =>
+    createAPI('/configuration', 'get', {
+        params: {
+            t: 'status',
+            action: 'disable',
             ...params,
         },
     })
