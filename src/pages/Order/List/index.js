@@ -124,14 +124,14 @@ class OrderList extends Component {
                             key: 'payWay',
                             label: '支付方式',
                             type: 'select',
-                            options: [{ key: 1, value: '选择1' }, { key: 2, value: '选择2' }],
+                            options: [],
                         },
                         {
                             key: 'sku',
                             label: 'sku品名',
                             type: 'select',
                             showSearch: true,
-                            options: [{ key: 1, value: '选择1' }, { key: 2, value: '选择2' }],
+                            options: [],
                         },
                     ]}
                     buttonGroup={[{ onSearch: this.handleFormSearch }]}

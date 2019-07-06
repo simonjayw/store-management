@@ -42,7 +42,7 @@ class SearchForm extends Component {
                     <Select style={{ width: 200 }} {...custom} {...props}>
                         {options.map(option => (
                             <Select.Option key={option[keyFiled || 'key']}>
-                                {option[textFiled || 'key']}
+                                {option[textFiled || 'value']}
                             </Select.Option>
                         ))}
                     </Select>
