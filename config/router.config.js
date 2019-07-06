@@ -40,12 +40,10 @@ export default [
                 path: '/commodity',
                 name: '商品',
                 icon: 'star',
-                temp: true,
                 routes: [
                     {
                         path: '/commodity/management',
                         name: '门店商品管理',
-                        temp: true,
                         component: './Commodity/Management',
                     },
                 ],
@@ -54,12 +52,10 @@ export default [
                 path: '/order',
                 name: '订单',
                 icon: 'container',
-                temp: true,
                 routes: [
                     {
                         path: '/order/list',
                         name: '订单列表',
-                        temp: true,
                         component: './Order/List',
                     },
                 ],
@@ -68,24 +64,20 @@ export default [
                 path: '/purchase',
                 name: '进货管理',
                 icon: 'control',
-                temp: true,
                 routes: [
                     {
                         path: '/purchase/commodity',
                         name: '进货商品',
-                        temp: true,
                         component: './Purchase/Commodity',
                     },
                     {
                         path: '/purchase/record',
                         name: '进货记录',
-                        temp: true,
                         component: './Purchase/Record',
                     },
                     {
                         path: '/purchase/settle',
                         name: '结算记录',
-                        temp: true,
                         component: './Purchase/Settle',
                     },
                 ],
@@ -94,23 +86,19 @@ export default [
                 path: '/inventory',
                 name: '门店库存管理',
                 icon: 'shop',
-                temp: true,
                 routes: [
                     {
                         path: '/inventory/in',
                         name: '入库管理',
-                        temp: true,
                         routes: [
                             {
                                 path: '/inventory/in/receive',
                                 name: '收货单列表',
-                                temp: true,
                                 component: './Inventory/In/Receive',
                             },
                             {
                                 path: '/inventory/in/record',
                                 name: '入库单列表',
-                                temp: true,
                                 component: './Inventory/In/Record',
                             },
                         ],
@@ -118,12 +106,10 @@ export default [
                     {
                         path: '/inventory/check',
                         name: '库存盘点',
-                        temp: true,
                         routes: [
                             {
                                 path: '/inventory/check/record',
                                 name: '门店商品列表',
-                                temp: true,
                                 component: './Inventory/Check/Record',
                             },
                         ],
@@ -134,29 +120,24 @@ export default [
                 path: '/operation',
                 name: '运营',
                 icon: 'interaction',
-                temp: true,
                 routes: [
                     {
                         path: '/operation/ad',
                         name: '广告管理',
-                        temp: true,
                         routes: [
                             {
                                 path: '/operation/ad/carousel',
                                 name: '轮播广告列表',
-                                temp: true,
                                 component: './Operation/Ad/Carousel',
                             },
                             {
                                 path: '/operation/ad/cursory',
                                 name: '走马',
-                                temp: true,
                                 component: './Operation/Ad/Cursory',
                             },
                             {
                                 path: '/operation/ad/limit',
                                 name: '限时抢购(去门店)',
-                                temp: true,
                                 component: './Operation/Ad/Limit',
                             },
                         ],
@@ -167,18 +148,15 @@ export default [
                 path: '/finance',
                 name: '财务',
                 icon: 'transaction',
-                temp: true,
                 routes: [
                     {
                         path: '/finance/invoice',
                         name: '发票申请记录',
-                        temp: true,
                         component: './Finance/Invoice',
                     },
                     {
                         path: '/finance/cash',
                         name: '现金收款管理',
-                        temp: true,
                         component: './Finance/Cash',
                     },
                 ],
@@ -187,12 +165,10 @@ export default [
                 path: '/fixedcost',
                 name: '固定成本',
                 icon: 'dollar',
-                temp: true,
                 routes: [
                     {
                         path: '/fixedcost/record',
                         name: '固定成本',
-                        temp: true,
                         component: './Fixedcost/Record',
                     },
                 ],
@@ -201,24 +177,20 @@ export default [
                 path: '/statistics',
                 name: '统计',
                 icon: 'project',
-                temp: true,
                 routes: [
                     {
                         path: '/statistics/commodity',
                         name: '商品统计',
-                        temp: true,
                         component: './Statistics/Commodity',
                     },
                     {
                         path: '/statistics/store',
                         name: '门店统计',
-                        temp: true,
                         component: './Statistics/Store',
                     },
                     {
                         path: '/statistics/member',
                         name: '会员统计',
-                        temp: true,
                         component: './Statistics/Member',
                     },
                 ],
@@ -227,12 +199,10 @@ export default [
                 path: '/setting',
                 name: '设置',
                 icon: 'setting',
-                temp: true,
                 routes: [
                     {
                         path: '/setting/store',
                         name: '门店设置',
-                        temp: true,
                         component: './Setting/Store',
                     },
                 ],
@@ -241,12 +211,10 @@ export default [
                 path: '/authority',
                 name: '权限',
                 icon: 'lock',
-                temp: true,
                 routes: [
                     {
                         path: '/authority/member',
                         name: '成员管理',
-                        temp: true,
                         component: './Authority/Member',
                     },
                 ],

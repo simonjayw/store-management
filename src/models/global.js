@@ -1,5 +1,5 @@
 import { queryNotices } from '@/services/api'
-import { getAllAuthorities } from '@/services/common'
+import { queryCurrentMenu } from '@/services/common'
 
 export default {
     namespace: 'global',
@@ -13,8 +13,8 @@ export default {
 
     effects: {
         *fetchAuthorities(_, { call, put }) {
-            const res = yield call(getAllAuthorities)
-            if (res && res.success) {
+            const res = yield call(queryCurrentMenu)
+            if (res && res.errcode === 0) {
                 yield put({
                     type: 'saveAuthorities',
                     payload: res.data,

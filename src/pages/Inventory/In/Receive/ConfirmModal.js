@@ -14,7 +14,8 @@ class ConfirmModal extends Component {
             key: item.skuid,
             quantity: item.quantity,
             name: item.name,
-            value: item.quantity,
+            value: item.quantity_real - item.quantity_receive,
+            quantity_real: item.quantity_real,
         }))
         this.setState({
             data: newData,
@@ -61,14 +62,16 @@ class ConfirmModal extends Component {
             <div>
                 <Row style={{ marginBottom: 10, fontWeight: 'bold' }}>
                     <Col span={12}>SKU名</Col>
-                    <Col span={6}>订货数量</Col>
-                    <Col span={6}>收货数量</Col>
+                    <Col span={4}>订货数量</Col>
+                    <Col span={4}>采购数量</Col>
+                    <Col span={4}>收货数量</Col>
                 </Row>
                 {data.map(item => (
                     <Row style={{ marginBottom: 10 }} key={item.key}>
                         <Col span={12}>{item.name}</Col>
-                        <Col span={6}>{item.quantity}</Col>
-                        <Col span={6}>
+                        <Col span={4}>{item.quantity}</Col>
+                        <Col span={4}>{item.quantity_real}</Col>
+                        <Col span={4}>
                             <InputNumber
                                 min={1}
                                 value={item.value}

@@ -57,17 +57,13 @@ class BasicLayout extends React.Component {
             type: 'setting/getSetting',
         })
         dispatch({
-            type: 'menu/getMenuData',
-            payload: { routes },
+            type: 'global/fetchAuthorities',
+        }).then(() => {
+            dispatch({
+                type: 'menu/getMenuData',
+                payload: { routes },
+            })
         })
-        // dispatch({
-        //     type: 'global/fetchAuthorities',
-        // }).then(() => {
-        //     dispatch({
-        //         type: 'menu/getMenuData',
-        //         payload: { routes },
-        //     })
-        // })
     }
 
     getContext() {

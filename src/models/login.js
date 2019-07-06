@@ -20,7 +20,6 @@ export default {
     effects: {
         *login({ payload }, { call, put }) {
             const res = yield call(login, {
-                t: 'login',
                 mobile: payload.mobile,
                 password: md5(payload.password),
             })
@@ -55,9 +54,7 @@ export default {
         },
 
         *logout(_, { put, call }) {
-            const res = yield call(logout, {
-                t: 'logout',
-            })
+            const res = yield call(logout)
             if (res && res.errcode === 0) {
                 setUserToken('')
                 message.success('登出成功!', 2)

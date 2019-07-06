@@ -1,5 +1,14 @@
 import createAPI from '@/utils/createAPI'
 
+// 获取当前的菜单
+export const queryCurrentMenu = async params =>
+    createAPI('/admin', 'get', {
+        params: {
+            t: 'menus',
+            ...params,
+        },
+    })
+
 /**
  * 动态页面
  */
@@ -28,15 +37,6 @@ export const updateDynamicData = async params =>
         params: {
             t: 'status',
             action: 'delete',
-            ...params,
-        },
-    })
-
-// 获取当前的菜单
-export const queryCurrentMenu = async params =>
-    createAPI('/admin', 'get', {
-        params: {
-            t: 'menus',
             ...params,
         },
     })

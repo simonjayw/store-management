@@ -109,7 +109,9 @@ const createAPI = (url, method, config) => {
         const userInfo = JSON.parse(userInfoStr)
         localUk = userInfo.uk
     }
-    params.uk = localUk
+    if (localUk) {
+        params.uk = localUk
+    }
     params.ver = '1.0.0'
     params.ts = Date.parse(new Date().toUTCString()) / 1000
     const paramsArr = Object.keys(params).map(key => {
