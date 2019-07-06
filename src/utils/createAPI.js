@@ -7,7 +7,10 @@ import { getUserToken, setUserToken } from './token'
 
 // const baseUrl = '/api'
 // export const baseUrl = '//47.97.180.197:89'
-export const baseUrl = '//admin.api.fresh.laoniutech.com'
+export const baseUrl =
+    process.env.NODE_ENV === 'development'
+        ? '//admin.api.fresh.laoniutech.com'
+        : '//msapi.yicaipi.com'
 
 const codeMessage = {
     200: '服务器成功返回请求的数据。',
