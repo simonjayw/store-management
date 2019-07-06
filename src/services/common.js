@@ -4,11 +4,11 @@ import createAPI from '@/utils/createAPI'
  * 动态页面
  */
 // 数据接口
-export const getDynamicConfig = async cid =>
+export const getDynamicConfig = async params =>
     createAPI('/configuration', 'get', {
         params: {
             t: 'list',
-            cid,
+            ...params,
         },
     })
 
@@ -18,6 +18,16 @@ export const addDynamicData = async params =>
         params: {
             t: 'save',
             id: 0,
+            ...params,
+        },
+    })
+
+// 删除接口
+export const updateDynamicData = async params =>
+    createAPI('/configuration', 'get', {
+        params: {
+            t: 'status',
+            action: 'delete',
             ...params,
         },
     })

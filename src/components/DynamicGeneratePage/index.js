@@ -1,18 +1,21 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-
+import moment from 'moment'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
 import ButtonGroup from '@/components/ButtonGroup'
+import { message } from 'antd'
 import AddModal from './AddModal'
+import UpdateModal from './UpdateModal'
 
 import { getDynamicConfig, addDynamicData } from '@/services/common'
 
 @connect(() => ({}))
 class DynamicGeneratePage extends Component {
     state = {
-        // searchCondition: {}, // 搜索条件
+        searchCondition: {}, // 搜索条件
+        searchForm: [],
         dataSrouce: [], // 表格数据
         pagination: {
             current: 1,
@@ -24,8 +27,8 @@ class DynamicGeneratePage extends Component {
         fields: [],
 
         addModal: false,
-
-        // updateModal: false,
+        updateModal: false,
+        updateRecord: {},
     }
 
     componentDidMount() {
@@ -33,49 +36,42 @@ class DynamicGeneratePage extends Component {
     }
 
     // 请求表格的数据
-    // fetchData = (parmas = {}) => {
-    // const { pageNum, ...params } = parmas
-    // const { pagination, searchCondition } = this.state
-    fetchData = () => {
+    fetchData = (parmas = {}) => {
+        const { pageNum, ...params } = parmas
+        const { pagination, searchCondition } = this.state
         const { cid } = this.props
 
-        getDynamicConfig(cid).then(res => {
+        getDynamicConfig({
+            size: pagination.pageSize,
+            index: pageNum || pagination.current,
+            // ...searchCondition,
+            q: JSON.stringify(searchCondition),
+            ...params,
+            cid,
+        }).then(res => {
             if (res && res.errcode === 0) {
                 const { fields, values } = res.data
                 this.setState({
                     fields,
                     columns: this.generateColumnsByFields(fields),
+                    searchForm: this.generateFormByFields(fields),
                     dataSrouce: values,
+                    pagination: {
+                        ...pagination,
+                        total: res.pages.count,
+                    },
                 })
             }
         })
-
-        // getFiedcostListMOCK({
-        //     size: pagination.pageSize,
-        //     index: pageNum || pagination.current,
-        //     ...searchCondition,
-        //     ...params,
-        // }).then(res => {
-        //     if (res && res.errcode === 0) {
-        //         this.setState({
-        //             dataSrouce: res.data,
-        //             pagination: {
-        //                 ...pagination,
-        //                 total: res.pages.count,
-        //             },
-        //         })
-        //     }
-        // })
     }
 
     // 查询表单搜索
-    // handleFormSearch = values => {
-    handleFormSearch = () => {
+    handleFormSearch = values => {
         const { pagination } = this.state
 
         this.setState(
             {
-                // searchCondition: values,
+                searchCondition: values,
                 pagination: {
                     ...pagination,
                     current: 1,
@@ -107,16 +103,29 @@ class DynamicGeneratePage extends Component {
     }
 
     // update弹窗 - 展示
-    onShowUpdateModal = () => {
+    onShowUpdateModal = record => {
         this.setState({
-            // updateModal: true,
+            updateModal: true,
+            updateRecord: record,
         })
     }
 
     // update弹窗 - 隐藏
     onHideUpdateModal = () => {
         this.setState({
-            // updateModal: false,
+            updateModal: false,
+        })
+    }
+
+    // update弹窗 - 确认
+    onConfirmUpdate = values => {
+        const { cid } = this.props
+        addDynamicData(Object.assign({ cid }, values)).then(res => {
+            if (res && res.errcode === 0) {
+                message.success('更新成功')
+                this.onHideUpdateModal()
+                this.fetchData()
+            }
         })
     }
 
@@ -136,8 +145,13 @@ class DynamicGeneratePage extends Component {
 
     // 添加弹窗 - 确认
     onConfirmAdd = values => {
-        addDynamicData(values).then(res => {
-            console.log(res)
+        const { cid } = this.props
+        addDynamicData(Object.assign({ cid }, values)).then(res => {
+            if (res && res.errcode === 0) {
+                message.success('添加成功')
+                this.onHideAddModal()
+                this.fetchData()
+            }
         })
     }
 
@@ -149,10 +163,24 @@ class DynamicGeneratePage extends Component {
             if (item.hidden === 1) {
                 return
             }
-            columns.push({
+            const colObj = {
                 title: item.show_name,
                 dataIndex: item.field_name,
-            })
+            }
+            // 为下拉框类型时，查找数据再返回
+            if (item.field_type === 'select') {
+                colObj.render = v => {
+                    let t = ''
+                    item.selects.forEach(i => {
+                        if (i.value === v) {
+                            t = i.text
+                        }
+                    })
+                    return t
+                }
+            }
+
+            columns.push(colObj)
         })
         columns.push({
             type: 'oprate',
@@ -166,21 +194,66 @@ class DynamicGeneratePage extends Component {
         return columns
     }
 
+    getSearchFormTypeBtFiledType = fieldType => {
+        let type = ''
+        switch (fieldType) {
+            case 'select':
+                type = 'select'
+                break
+            case 'date':
+                type = 'datepicker'
+                break
+            default:
+                type = 'input'
+                break
+        }
+        return type
+    }
+
+    generateFormByFields = (filelds = []) => {
+        const searchForm = []
+        filelds.forEach(item => {
+            if (item.search === 1) {
+                const type = this.getSearchFormTypeBtFiledType(item.field_type)
+                const formObj = {
+                    label: item.show_name,
+                    key: item.field_name,
+                    type,
+                }
+                // 对日期进行处理
+                if (type === 'datepicker') {
+                    formObj.dateFormat = 'YYYY-MM-DD HH:mm:ss'
+                    formObj.showTime = {
+                        defaultValue: moment('00:00:00', 'HH:mm:ss'),
+                    }
+                }
+                // 对下拉框处理
+                if (type === 'select') {
+                    formObj.options = item.selects
+                    formObj.keyFiled = 'value'
+                    formObj.textFiled = 'text'
+                }
+                searchForm.push(formObj)
+            }
+        })
+        return searchForm
+    }
+
     render() {
-        const { dataSrouce, pagination, columns, fields, addModal /* , updateModal */ } = this.state
+        const {
+            dataSrouce,
+            pagination,
+            columns,
+            searchForm,
+            fields,
+            addModal,
+            updateModal,
+            updateRecord,
+        } = this.state
 
         return (
             <PageHeaderWrapper>
-                <SearchForm
-                    data={[
-                        {
-                            label: '商品名称/编号',
-                            type: 'input',
-                            key: 'id',
-                        },
-                    ]}
-                    buttonGroup={[{ onSearch: this.handleFormSearch }]}
-                />
+                <SearchForm data={searchForm} buttonGroup={[{ onSearch: this.handleFormSearch }]} />
                 <ButtonGroup
                     secondary={[
                         {
@@ -202,6 +275,13 @@ class DynamicGeneratePage extends Component {
                     onCancel={this.onHideAddModal}
                     onOk={this.onConfirmAdd}
                     fields={fields}
+                />
+                <UpdateModal
+                    visible={updateModal}
+                    onCancel={this.onHideUpdateModal}
+                    onOk={this.onConfirmUpdate}
+                    fields={fields}
+                    record={updateRecord}
                 />
             </PageHeaderWrapper>
         )

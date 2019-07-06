@@ -21,7 +21,7 @@ class SearchForm extends Component {
     }
 
     // 生成select
-    createSelect = ({ label, key, options = [], ...props }) => {
+    createSelect = ({ label, key, options = [], keyFiled, textFiled, ...props }) => {
         const {
             form: { getFieldDecorator },
         } = this.props
@@ -41,7 +41,9 @@ class SearchForm extends Component {
                 {getFieldDecorator(key)(
                     <Select style={{ width: 200 }} {...custom} {...props}>
                         {options.map(option => (
-                            <Select.Option key={option.key}>{option.value}</Select.Option>
+                            <Select.Option key={option[keyFiled || 'key']}>
+                                {option[textFiled || 'key']}
+                            </Select.Option>
                         ))}
                     </Select>
                 )}
@@ -125,7 +127,7 @@ class SearchForm extends Component {
     handleSearch = () => {
         const { onSearch } = this.props
         const values = this.getFormValues()
-        console.log(values)
+        // console.log(values)
         onSearch(values)
     }
 

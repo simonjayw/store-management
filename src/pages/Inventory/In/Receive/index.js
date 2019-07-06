@@ -8,6 +8,7 @@ import BasicTable from '@/components/BasicTable'
 import ButtonGroup from '@/components/ButtonGroup'
 import ConfirmModal from './ConfirmModal'
 
+import { STATUS_MAP } from './statusMap'
 import { getReceiveList, confrimReceive } from '../../services'
 
 @connect(() => ({}))
@@ -261,7 +262,15 @@ class InventoryInReceive extends Component {
                         {
                             dataIndex: 'status',
                             title: '状态',
-                            render: data => (data === 0 ? '待收货' : '已收货'),
+                            render: sat => {
+                                let t = ''
+                                STATUS_MAP.forEach(item => {
+                                    if (item.key === sat) {
+                                        t = item.name
+                                    }
+                                })
+                                return t
+                            },
                         },
                     ]}
                     dataSource={dataSrouce}

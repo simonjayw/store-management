@@ -5,6 +5,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
 
+import { Modal } from 'antd'
 import { getComodityList } from '../services'
 
 @connect(() => ({}))
@@ -81,6 +82,13 @@ class CommodityManagement extends Component {
                 })
             }
         )
+    }
+
+    onGenereteTail = () => {
+        Modal.warn({
+            title: '提示',
+            content: '功能正在开发中，敬请期待',
+        })
     }
 
     render() {
@@ -194,7 +202,15 @@ class CommodityManagement extends Component {
                         {
                             type: 'oprate',
                             // fixed: 'right',
-                            buttons: [{ text: '售价/别名' }, { text: '生成尾货' }],
+                            buttons: [
+                                {
+                                    text: '售价/别名',
+                                },
+                                {
+                                    text: '生成尾货',
+                                    onClick: this.onGenereteTail,
+                                },
+                            ],
                         },
                     ]}
                     dataSource={dataSrouce}
