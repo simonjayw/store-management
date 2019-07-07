@@ -52,7 +52,7 @@ class SetModal extends Component {
                     <Form.Item {...formLayout} label="门店售价">
                         {getFieldDecorator('price_sale', {
                             rules: [{ required: true, message: '该项必填' }],
-                            initialValue: record.alias,
+                            initialValue: record.price_sale,
                         })(<Input />)}
                     </Form.Item>
                 </Form>

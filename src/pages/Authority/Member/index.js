@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Modal } from 'antd'
+import { Modal, Switch, message } from 'antd'
 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
@@ -8,8 +8,16 @@ import BasicTable from '@/components/BasicTable'
 import ButtonGroup from '@/components/ButtonGroup'
 
 import AuthorityMemberDetail from './detail'
+import RoleConfig from './roleConfig'
 
-import { getMemberListMOCK } from '../services'
+import {
+    getMemberList,
+    addUpadteMember,
+    changeMemberStatus,
+    getRoleList,
+    getMemberRoles,
+    setMemberRoles,
+} from '../services'
 
 @connect(() => ({}))
 class AuthorityMember extends Component {
@@ -21,10 +29,25 @@ class AuthorityMember extends Component {
             pageSize: 10,
             total: 0,
         }, // 表格分页
+        roleData: [],
+        showDetial: false,
+        updateRecord: null,
+
+        roleModal: false,
+        roleRecord: [],
+        memberRoles: [],
     }
 
     componentDidMount() {
         this.fetchData()
+
+        getRoleList().then(res => {
+            if (res && res.errcode === 0) {
+                this.setState({
+                    roleData: res.data,
+                })
+            }
+        })
     }
 
     // 请求表格的数据
@@ -32,7 +55,9 @@ class AuthorityMember extends Component {
         const { pageNum, ...params } = parmas
         const { pagination, searchCondition } = this.state
 
-        getMemberListMOCK({
+        getMemberList({
+            // type:取值auth.type
+            // mch_id:
             size: pagination.pageSize,
             index: pageNum || pagination.current,
             ...searchCondition,
@@ -43,7 +68,7 @@ class AuthorityMember extends Component {
                     dataSrouce: res.data,
                     pagination: {
                         ...pagination,
-                        total: res.pages.count,
+                        total: res.pages ? res.pages.count : 0,
                     },
                 })
             }
@@ -88,21 +113,37 @@ class AuthorityMember extends Component {
     }
 
     // 更新成员
-    onUpdateMember = () => {
+    onUpdateMember = record => {
         this.setState({
             showDetial: true,
+            updateRecord: record,
         })
     }
 
     // 删除成员
-    onDeleteMember = () => {
-        console.log('delete')
+    onDeleteMember = record => {
+        Modal.confirm({
+            title: '提示',
+            content: '是否确认删除',
+            onOk: () => {
+                changeMemberStatus({
+                    id: record.id,
+                    action: 'delete',
+                }).then(res => {
+                    if (res && res.errcode === 0) {
+                        message.success('操作成功')
+                        this.fetchData()
+                    }
+                })
+            },
+        })
     }
 
     // 添加成员
     onAddMember = () => {
         this.setState({
             showDetial: true,
+            updateRecord: null,
         })
     }
 
@@ -110,11 +151,81 @@ class AuthorityMember extends Component {
     onHideDetial = () => {
         this.setState({
             showDetial: false,
+            updateRecord: null,
+        })
+    }
+
+    // 添加 / updaye
+    handleConfirmDetial = data => {
+        if (!data.remark) {
+            delete data.remark
+        }
+        addUpadteMember(data).then(res => {
+            if (res && res.errcode === 0) {
+                message.success('操作成功')
+                this.onHideDetial()
+                this.fetchData()
+            }
+        })
+    }
+
+    // 成员启用停用
+    handleChangeStatus = record => {
+        changeMemberStatus({
+            id: record.id,
+            action: record.status === 0 ? 'disable' : 'enable',
+        }).then(res => {
+            if (res && res.errcode === 0) {
+                message.success('操作成功')
+                this.fetchData()
+            }
+        })
+    }
+
+    onShowMemberRoles = record => {
+        getMemberRoles({
+            id: record.id,
+        }).then(res => {
+            if (res && res.errcode === 0) {
+                this.setState({
+                    roleModal: true,
+                    roleRecord: record,
+                    memberRoles: res.data,
+                })
+            }
+        })
+    }
+
+    onHideMemberRoles = () => {
+        this.setState({
+            roleModal: false,
+            roleRecord: [],
+            memberRoles: [],
+        })
+    }
+
+    onConfirmMemberRoles = data => {
+        setMemberRoles(data).then(res => {
+            if (res && res.errcode === 0) {
+                message.success('配置成功')
+                this.onHideMemberRoles()
+                this.fetchData()
+            }
         })
     }
 
     render() {
-        const { dataSrouce, pagination, showDetial } = this.state
+        const {
+            dataSrouce,
+            pagination,
+            showDetial,
+            updateRecord,
+            roleData,
+
+            roleModal,
+            roleRecord,
+            memberRoles,
+        } = this.state
 
         return (
             <PageHeaderWrapper>
@@ -123,12 +234,14 @@ class AuthorityMember extends Component {
                         {
                             label: '用户名/姓名',
                             type: 'input',
-                            key: 'name',
+                            key: 'q',
                         },
                         {
                             label: '所属角色',
                             type: 'select',
-                            options: [{ key: 1, value: '选择1' }, { key: 2, value: '选择2' }],
+                            options: roleData,
+                            textFiled: 'name',
+                            keyFiled: 'id',
                             key: 'role',
                         },
                     ]}
@@ -146,36 +259,46 @@ class AuthorityMember extends Component {
                     columns={[
                         {
                             title: '成员账号',
-                            dataIndex: 'a',
+                            dataIndex: 'acount',
+                            render: (_, record) => record.mobile,
                         },
                         {
                             title: '姓名',
-                            dataIndex: 'c',
+                            dataIndex: 'name',
                         },
                         {
                             title: '手机号码',
-                            dataIndex: 'd',
+                            dataIndex: 'mobile',
                         },
                         {
                             title: '所属角色',
-                            dataIndex: 'e',
+                            dataIndex: 'roles',
+                            render: v => v.join(','),
                         },
                         {
-                            dataIndex: 'date1',
+                            dataIndex: 'create_time',
                             title: '添加时间',
                         },
                         {
-                            dataIndex: 'date2',
                             title: '最后登录',
+                            dataIndex: 'last_time',
                         },
                         {
-                            dataIndex: 'g',
+                            dataIndex: 'status',
                             title: '是否启用',
+                            render: (status, record) => (
+                                <Switch
+                                    checked={status === 0}
+                                    checkedChildren="启用"
+                                    unCheckedChildren="停用"
+                                    onChange={() => this.handleChangeStatus(record)}
+                                />
+                            ),
                         },
                         {
                             type: 'oprate',
                             buttons: [
-                                { text: '关联角色' },
+                                { text: '关联角色', onClick: this.onShowMemberRoles },
                                 { text: '编辑', onClick: this.onUpdateMember },
                                 { text: '删除', onClick: this.onDeleteMember },
                             ],
@@ -195,7 +318,23 @@ class AuthorityMember extends Component {
                     visible={showDetial}
                     onCancel={this.onHideDetial}
                 >
-                    <AuthorityMemberDetail />
+                    <AuthorityMemberDetail
+                        record={updateRecord}
+                        onConfirm={this.handleConfirmDetial}
+                    />
+                </Modal>
+                <Modal
+                    visible={roleModal}
+                    title="关联角色"
+                    destroyOnClose
+                    onCancel={this.onHideMemberRoles}
+                    footer={null}
+                >
+                    <RoleConfig
+                        onConfirm={this.onConfirmMemberRoles}
+                        record={roleRecord}
+                        roles={memberRoles}
+                    />
                 </Modal>
             </PageHeaderWrapper>
         )
