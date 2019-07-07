@@ -170,8 +170,8 @@ export default class GlobalHeaderRight extends PureComponent {
                                 icon="user"
                                 alt="avatar"
                             />
-                            {currentUser.userName ? (
-                                <span className={styles.name}>{currentUser.userName}</span>
+                            {currentUser.name ? (
+                                <span className={styles.name}>{currentUser.name}</span>
                             ) : null}
                         </span>
                     </HeaderDropdown>

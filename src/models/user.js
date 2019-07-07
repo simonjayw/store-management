@@ -1,4 +1,5 @@
-import { queryCurrentUser } from '@/services/common'
+// import { queryCurrentUser } from '@/services/common'
+import { getUserToken } from '@/utils/token'
 
 export default {
     namespace: 'user',
@@ -9,12 +10,13 @@ export default {
     },
 
     effects: {
-        *fetchCurrent(_, { call, put }) {
-            const response = yield call(queryCurrentUser)
-            if (response && response.success) {
+        *fetchCurrent(_, { put }) {
+            const response = JSON.parse(getUserToken())
+
+            if (response) {
                 yield put({
                     type: 'saveCurrentUser',
-                    payload: response.data,
+                    payload: response,
                 })
             }
         },
@@ -27,15 +29,15 @@ export default {
                 currentUser: action.payload || {},
             }
         },
-        changeNotifyCount(state, action) {
-            return {
-                ...state,
-                currentUser: {
-                    ...state.currentUser,
-                    notifyCount: action.payload.totalCount,
-                    unreadCount: action.payload.unreadCount,
-                },
-            }
-        },
+        // changeNotifyCount(state, action) {
+        //     return {
+        //         ...state,
+        //         currentUser: {
+        //             ...state.currentUser,
+        //             notifyCount: action.payload.totalCount,
+        //             unreadCount: action.payload.unreadCount,
+        //         },
+        //     }
+        // },
     },
 }
