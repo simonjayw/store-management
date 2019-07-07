@@ -161,8 +161,7 @@ class FinanceInvoice extends Component {
 
     // 根据fields 生成columns
     generateColumnsByFields = (filelds = []) => {
-        const { pushColumns } = this.props
-        let columns = []
+        const columns = []
         filelds.forEach(item => {
             // 为1时隐藏
             if (item.hidden === 1) {
@@ -186,19 +185,6 @@ class FinanceInvoice extends Component {
             }
 
             columns.push(colObj)
-        })
-        if (pushColumns && pushColumns.length) {
-            columns = columns.concat(pushColumns)
-        }
-
-        columns.push({
-            type: 'oprate',
-            buttons: [
-                {
-                    text: '编辑',
-                    onClick: this.onShowUpdateModal,
-                },
-            ],
         })
         return columns
     }

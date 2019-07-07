@@ -258,7 +258,12 @@ class DynamicGeneratePage extends Component {
 
         return (
             <PageHeaderWrapper>
-                <SearchForm data={searchForm} buttonGroup={[{ onSearch: this.handleFormSearch }]} />
+                {searchForm && searchForm.length > 0 && (
+                    <SearchForm
+                        data={searchForm}
+                        buttonGroup={[{ onSearch: this.handleFormSearch }]}
+                    />
+                )}
                 <ButtonGroup
                     secondary={[
                         {
