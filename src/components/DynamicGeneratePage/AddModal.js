@@ -26,12 +26,23 @@ class AddModal extends Component {
         })
     }
 
+    handleUploadImg = (fieldName, path) => {
+        const {
+            form: { setFieldsValue },
+        } = this.props
+        console.log('fieldName', path)
+        if (path) {
+            setFieldsValue({
+                [fieldName]: path,
+            })
+        }
+    }
+
     generateForm = () => {
         const {
             form: { getFieldDecorator },
             fields,
         } = this.props
-
         return (
             <Fragment>
                 {fields.map((item, index) => {
@@ -61,7 +72,7 @@ class AddModal extends Component {
                             style={formItemStyle}
                         >
                             {getFieldDecorator(item.field_name, fieldsOptions)(
-                                generateFormItem(item)
+                                generateFormItem(item, false, this.handleUploadImg)
                             )}
                         </Form.Item>
                     )

@@ -25,6 +25,18 @@ class UpdateModal extends Component {
         })
     }
 
+    handleUploadImg = (fieldName, path) => {
+        const {
+            form: { setFieldsValue },
+        } = this.props
+        console.log('fieldName', path)
+        if (path) {
+            setFieldsValue({
+                [fieldName]: path,
+            })
+        }
+    }
+
     generateForm = () => {
         const {
             form: { getFieldDecorator },
@@ -61,7 +73,7 @@ class UpdateModal extends Component {
                             style={formItemStyle}
                         >
                             {getFieldDecorator(item.field_name, fieldsOptions)(
-                                generateFormItem(item, true)
+                                generateFormItem(item, record, this.handleUploadImg)
                             )}
                         </Form.Item>
                     )

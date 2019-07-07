@@ -180,7 +180,12 @@ class DynamicGeneratePage extends Component {
                     return t
                 }
             }
-
+            // 对图片处理
+            if (item.field_type === 'file') {
+                colObj.render = v => {
+                    return <img style={{ width: '80px' }} src={v} alt={v} />
+                }
+            }
             columns.push(colObj)
         })
         if (pushColumns && pushColumns.length) {

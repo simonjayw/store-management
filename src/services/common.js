@@ -50,3 +50,19 @@ export const disableDynamicData = async params =>
             ...params,
         },
     })
+
+// 文件上传
+export const fileUpload = async data =>
+    createAPI('/general', 'post', {
+        params: {
+            t: 'upload',
+        },
+        data,
+    })
+
+// 通用
+export const generalPost = async (params = {}, formData) =>
+    createAPI('/general', 'post', {
+        params,
+        data: formData,
+    })
