@@ -6,6 +6,7 @@ import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
 import TableRenderImg from '@/components/TableRenderImg'
 
+import { PURCHASE_STATUS } from '@/utils/statusMap'
 import { getRecordList } from '../services'
 
 @connect(() => ({}))
@@ -104,7 +105,8 @@ class PurchaseRecord extends Component {
                             label: '订货状态',
                             type: 'select',
                             key: 'status',
-                            options: [{ key: 0, value: '未发货' }, { key: 1, value: '已发货' }],
+                            textFiled: 'name',
+                            options: PURCHASE_STATUS,
                         },
                     ]}
                     buttonGroup={[{ onSearch: this.handleFormSearch }]}
@@ -165,9 +167,8 @@ class PurchaseRecord extends Component {
                             title: '进货数量',
                         },
                         {
-                            dataIndex: 'status',
+                            dataIndex: 'status_desc',
                             title: '订货状态',
-                            render: status => (status === 0 ? '未发货' : '已发货'),
                         },
                     ]}
                     dataSource={dataSrouce}
