@@ -66,3 +66,12 @@ export const generalPost = async (params = {}, formData) =>
         params,
         data: formData,
     })
+
+// 获取地域信息
+export const getRegions = async params =>
+    createAPI('/general', 'get', {
+        params: {
+            t: 'regions',
+            ...params,
+        },
+    })
