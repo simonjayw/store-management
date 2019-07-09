@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Modal, Form } from 'antd'
 import moment from 'moment'
 import { generateFormItem } from './help'
+import CascaderScope from './CascaderScope'
 
 @Form.create()
 class UpdateModal extends Component {
@@ -19,6 +20,9 @@ class UpdateModal extends Component {
                         values[key] = moment(values[key]).format('YYYY-MM-DD HH:mm:ss')
                     }
                 })
+                if (values.scope) {
+                    values.scope = values.scope.join(',')
+                }
                 const res = Object.assign({ id: record.id }, values)
                 onOk(res)
             }
@@ -35,6 +39,16 @@ class UpdateModal extends Component {
                 [fieldName]: path,
             })
         }
+    }
+
+    onChangeScope = values => {
+        const {
+            form: { setFieldsValue },
+        } = this.props
+        console.log('scope', values)
+        setFieldsValue({
+            scope: values,
+        })
     }
 
     generateForm = () => {
@@ -64,6 +78,24 @@ class UpdateModal extends Component {
                         fieldsOptions.rules = [{ required: true, message: '该项必填' }]
                     }
 
+                    if (item.field_name === 'scope') {
+                        fieldsOptions.initialValue = record.scope ? record.scope.split(',') : []
+                        fieldsOptions.rules = [
+                            { required: true, message: '该项必填' },
+                            {
+                                validator: (rule, value, callback) => {
+                                    // TODO: 是否要去重复
+                                    // const v = new Set(value)
+                                    if (value.includes(undefined)) {
+                                        callback('4个配送区域都要填写')
+                                    }
+                                    callback()
+                                },
+                            },
+                        ]
+                        fieldsOptions.validateTrigger = 'validateFields'
+                    }
+
                     return (
                         <Form.Item
                             labelCol={{ span: 6 }}
@@ -72,8 +104,15 @@ class UpdateModal extends Component {
                             label={item.show_name}
                             style={formItemStyle}
                         >
+                            {item.field_name === 'scope' && (
+                                <div>当前配送区域：{record.scope_name}</div>
+                            )}
                             {getFieldDecorator(item.field_name, fieldsOptions)(
-                                generateFormItem(item, record, this.handleUploadImg)
+                                item.field_name === 'scope' ? (
+                                    <CascaderScope onChange={this.onChangeScope} />
+                                ) : (
+                                    generateFormItem(item, record, this.handleUploadImg)
+                                )
                             )}
                         </Form.Item>
                     )

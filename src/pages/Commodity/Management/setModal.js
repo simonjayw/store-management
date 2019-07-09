@@ -36,7 +36,6 @@ class SetModal extends Component {
                 span: 18,
             },
         }
-
         return (
             <Modal title="设置别名/售价" visible={visible} footer={null} onCancel={onCancel}>
                 <Form>
@@ -45,7 +44,7 @@ class SetModal extends Component {
                     </Form.Item>
                     <Form.Item {...formLayout} label="别名">
                         {getFieldDecorator('alias', {
-                            rules: [{ required: true, message: '该项必填' }],
+                            // rules: [{ required: true, message: '该项必填' }],
                             initialValue: record.alias,
                         })(<Input />)}
                     </Form.Item>

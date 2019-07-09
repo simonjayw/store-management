@@ -185,6 +185,12 @@ class DynamicGeneratePage extends Component {
                     return <img style={{ width: '80px' }} src={v} alt={v} />
                 }
             }
+            // 对图片处理
+            if (item.field_name === 'scope') {
+                colObj.render = (v, record) => {
+                    return record.scope_name
+                }
+            }
             columns.push(colObj)
         })
         if (pushColumns && pushColumns.length) {

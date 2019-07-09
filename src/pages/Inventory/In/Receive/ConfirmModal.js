@@ -11,7 +11,7 @@ class ConfirmModal extends Component {
 
         const newData = data.map(item => ({
             serial_no: item.serial_no,
-            key: item.skuid,
+            key: item.id,
             quantity: item.quantity,
             name: item.name,
             value: item.quantity_real - item.quantity_receive,
