@@ -5,12 +5,20 @@ import md5 from 'md5'
 import { uuid, createSign, mainSite } from '@/utils/utils'
 import { getUserToken, setUserToken } from './token'
 
-// const baseUrl = '/api'
-// export const baseUrl = '//47.97.180.197:89'
-export const baseUrl =
-    process.env.NODE_ENV === 'development'
-        ? '//admin.api.fresh.laoniutech.com'
-        : '//msapi.yicaipi.com'
+// const baseURL = '/api'
+// export const baseURL = '//47.97.180.197:89'
+let baseURL = ''
+
+// 线上环境
+if (window.location.href.includes('mp.yicaipi')) {
+    baseURL = '//msapi.yicaipi.com'
+
+    // 其他环境
+} else {
+    baseURL = '//admin.api.fresh.laoniutech.com'
+}
+
+export const baseUrl = baseURL
 
 const codeMessage = {
     200: '服务器成功返回请求的数据。',
@@ -46,7 +54,7 @@ const checkStatus = response => {
 }
 
 const instance = axios.create({
-    baseURL: baseUrl,
+    baseURL,
     withCredentials: true,
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
