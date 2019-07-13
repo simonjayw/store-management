@@ -1,14 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 
-import { Switch, Modal, message } from 'antd'
+import { Switch, message } from 'antd'
 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
 import SetModal from './setModal'
 
-import { getComodityList, changeComodityStatus, updateComodityMessage } from '../services'
+import {
+    getComodityList,
+    changeComodityStatus,
+    updateComodityMessage,
+    generateTailGoods,
+} from '../services'
 
 @connect(() => ({}))
 class CommodityManagement extends Component {
@@ -126,10 +131,24 @@ class CommodityManagement extends Component {
     }
 
     // 尾货
-    onGenereteTail = () => {
-        Modal.warn({
-            title: '提示',
-            content: '功能正在开发中，敬请期待',
+    onGenereteTail = record => {
+        const data = {
+            serial_no: record.serial_no,
+            stock_now: record.stock_now,
+        }
+        if (record.alias != null) {
+            data.alias = record.alias
+        }
+        if (record.price_sale != null) {
+            data.price_sale = record.price_sale
+        }
+
+        generateTailGoods(data).then(res => {
+            if (res && res.errcode === 0) {
+                message.success('操作成功')
+
+                this.fetchData()
+            }
         })
     }
 

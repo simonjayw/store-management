@@ -32,3 +32,12 @@ export const updateComodityMessage = async params =>
             ...params,
         },
     })
+
+// 生成尾货
+export const generateTailGoods = async params =>
+    createAPI('/goods', 'get', {
+        params: {
+            t: 'merchant.goods.fission',
+            ...params,
+        },
+    })
