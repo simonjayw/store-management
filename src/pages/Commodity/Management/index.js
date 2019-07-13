@@ -7,6 +7,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
 import SetModal from './setModal'
+import GenerateModal from './generateTail'
 
 import {
     getComodityList,
@@ -28,6 +29,9 @@ class CommodityManagement extends Component {
 
         setRecord: {},
         setModal: false,
+
+        tailRecord: {},
+        tailModal: false,
     }
 
     componentDidMount() {
@@ -132,28 +136,32 @@ class CommodityManagement extends Component {
 
     // 尾货
     onGenereteTail = record => {
-        const data = {
-            serial_no: record.serial_no,
-            stock_now: record.stock_now,
-        }
-        if (record.alias != null) {
-            data.alias = record.alias
-        }
-        if (record.price_sale != null) {
-            data.price_sale = record.price_sale
-        }
+        this.setState({
+            tailModal: true,
+            tailRecord: record,
+        })
+    }
 
+    onHideTailModal = () => {
+        this.setState({
+            tailModal: false,
+            tailRecord: {},
+        })
+    }
+
+    onConfirmTail = data => {
         generateTailGoods(data).then(res => {
             if (res && res.errcode === 0) {
                 message.success('操作成功')
 
+                this.onHideTailModal()
                 this.fetchData()
             }
         })
     }
 
     render() {
-        const { dataSrouce, pagination, setRecord, setModal } = this.state
+        const { dataSrouce, pagination, setRecord, setModal, tailRecord, tailModal } = this.state
 
         return (
             <PageHeaderWrapper>
@@ -296,6 +304,12 @@ class CommodityManagement extends Component {
                     visible={setModal}
                     onCancel={this.onHideSetModal}
                     onConfirm={this.onConfirmSet}
+                />
+                <GenerateModal
+                    record={tailRecord}
+                    visible={tailModal}
+                    onCancel={this.onHideTailModal}
+                    onConfirm={this.onConfirmTail}
                 />
             </PageHeaderWrapper>
         )
