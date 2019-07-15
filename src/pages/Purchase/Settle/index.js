@@ -5,7 +5,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
 
-import { getSettleListMOCK } from '../services'
+import { getSettleList } from '../services'
 
 @connect(() => ({}))
 class PurchaseSettle extends Component {
@@ -28,7 +28,7 @@ class PurchaseSettle extends Component {
         const { pageNum, ...params } = parmas
         const { pagination, searchCondition } = this.state
 
-        getSettleListMOCK({
+        getSettleList({
             size: pagination.pageSize,
             index: pageNum || pagination.current,
             ...searchCondition,
@@ -93,7 +93,7 @@ class PurchaseSettle extends Component {
                         {
                             label: 'sku品名',
                             type: 'input',
-                            key: 'sku',
+                            key: 'q',
                         },
                     ]}
                     buttonGroup={[{ onSearch: this.handleFormSearch }]}
@@ -102,60 +102,71 @@ class PurchaseSettle extends Component {
                     columns={[
                         {
                             title: '订货单ID',
-                            dataIndex: 'id1',
+                            dataIndex: 'serial_no',
                         },
                         {
                             title: '日期',
-                            dataIndex: 'date1',
+                            dataIndex: 'last_time',
                         },
                         {
                             title: '订货门店',
-                            dataIndex: 'amount',
-                            type: 'amount',
+                            dataIndex: 'merchant_name',
                         },
                         {
                             title: '商品图片',
-                            dataIndex: 'datecol',
-                            type: 'date',
+                            dataIndex: 'pictures',
+                            render(pictures) {
+                                return (
+                                    <div>
+                                        {pictures.map(item => (
+                                            <img
+                                                style={{ width: 50, margin: '0 10px' }}
+                                                src={item.url}
+                                                alt={item.url}
+                                            />
+                                        ))}
+                                    </div>
+                                )
+                            },
                         },
                         {
-                            dataIndex: 'a',
+                            dataIndex: 'name',
                             title: 'sku品名',
                         },
                         {
-                            dataIndex: 'b',
+                            dataIndex: 'category_name',
                             title: '品类',
                         },
                         {
-                            dataIndex: 'c',
+                            dataIndex: 'variety_name',
                             title: '品种',
                         },
                         {
-                            dataIndex: 'd',
+                            dataIndex: 'region_name',
                             title: '产区',
                         },
                         {
-                            dataIndex: 'e',
+                            dataIndex: 'storage_name',
                             title: '存储情况',
                         },
                         {
-                            dataIndex: 'f',
+                            dataIndex: 'process_name',
                             title: '加工情况',
                         },
                         {
-                            dataIndex: 'g',
+                            dataIndex: 'packing_name_a',
                             title: '外包装',
                         },
                         {
-                            dataIndex: 'h',
+                            dataIndex: 'packing_name_b',
                             title: '内包装',
                         },
                         {
-                            dataIndex: 'i',
+                            dataIndex: 'quantity_original',
                             title: '进货数量',
                         },
                         {
-                            dataIndex: 'j',
+                            dataIndex: 'price_settlement',
                             title: '结算总价',
                         },
                     ]}

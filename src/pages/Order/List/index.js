@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
+import { Modal } from 'antd'
 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
 import ButtonGroup from '@/components/ButtonGroup'
+import GoodsDetail from './goodsDetail'
 
-import { getOrderListMOCK } from './services'
+import { getOrderList } from '../services'
 
 @connect(() => ({}))
 class OrderList extends Component {
@@ -18,6 +20,9 @@ class OrderList extends Component {
             pageSize: 10,
             total: 0,
         }, // 表格分页
+
+        goodsDetail: false,
+        goodsDetailRecord: {},
     }
 
     componentDidMount() {
@@ -29,7 +34,7 @@ class OrderList extends Component {
         const { pageNum, ...params } = parmas
         const { pagination, searchCondition } = this.state
 
-        getOrderListMOCK({
+        getOrderList({
             size: pagination.pageSize,
             index: pageNum || pagination.current,
             ...searchCondition,
@@ -84,8 +89,22 @@ class OrderList extends Component {
         )
     }
 
+    onShowGoodsDetail = record => {
+        this.setState({
+            goodsDetail: true,
+            goodsDetailRecord: record,
+        })
+    }
+
+    onHideGoodsDetail = () => {
+        this.setState({
+            goodsDetail: false,
+            goodsDetailRecord: {},
+        })
+    }
+
     render() {
-        const { dataSrouce, pagination } = this.state
+        const { dataSrouce, pagination, goodsDetail, goodsDetailRecord } = this.state
 
         return (
             <PageHeaderWrapper>
@@ -94,45 +113,40 @@ class OrderList extends Component {
                         {
                             label: '订单ID',
                             type: 'input',
-                            key: 'orderId',
+                            key: 'serial_no',
                         },
                         {
                             label: '用户手机',
                             type: 'input',
-                            options: [{ key: 1, value: '选择1' }, { key: 2, value: '选择2' }],
                             key: 'mobile',
                         },
                         {
                             label: '订单时间',
                             type: 'datepicker',
-                            key: 'date',
+                            key: 'order_time',
                         },
                         {
                             label: '订单状态',
                             type: 'select',
-                            key: 'orderState',
+                            key: 'status',
                             options: [
-                                { key: 1, value: '待支付' },
-                                { key: 2, value: '待发货' },
-                                { key: 3, value: '已挂账' },
-                                { key: 4, value: '已完成' },
-                                { key: 5, value: '已支付-现金' },
-                                { key: 6, value: '已取消' },
+                                { key: -1, value: '全部' },
+                                { key: 0, value: '待支付' },
+                                { key: 1, value: '已支付' },
+                                { key: 11, value: '已取消' },
                             ],
                         },
                         {
-                            key: 'payWay',
+                            key: 'paytype',
                             label: '支付方式',
                             type: 'select',
                             options: [],
                         },
-                        {
-                            key: 'sku',
-                            label: 'sku品名',
-                            type: 'select',
-                            showSearch: true,
-                            options: [],
-                        },
+                        // {
+                        //     key: 'q',
+                        //     label: 'sku品名',
+                        //     type: 'input',
+                        // },
                     ]}
                     buttonGroup={[{ onSearch: this.handleFormSearch }]}
                 />
@@ -147,119 +161,123 @@ class OrderList extends Component {
                     columns={[
                         {
                             title: '订单时间',
-                            dataIndex: 'date1',
+                            dataIndex: 'order_time',
                         },
                         {
                             title: '订单id',
-                            dataIndex: 'id1',
+                            dataIndex: 'serial_no',
                         },
                         {
                             title: '客户id',
-                            dataIndex: 'id2',
+                            dataIndex: 'id234234232',
                         },
                         {
                             title: '客户电话',
-                            dataIndex: 'a',
+                            dataIndex: 'a23423423423',
                         },
                         {
-                            dataIndex: 'b',
+                            dataIndex: 'b2424',
                             title: '客户姓名',
                         },
                         {
-                            dataIndex: 'number1',
+                            dataIndex: 'amount',
                             title: '订单金额',
                         },
                         {
-                            dataIndex: 'c',
+                            dataIndex: 'c345346456',
                             title: '支付方式',
                         },
                         {
-                            dataIndex: 'd',
+                            dataIndex: 'status_desc',
                             title: '订单状态',
                         },
                         {
-                            dataIndex: 'id3',
+                            dataIndex: 'id34564563634563',
                             title: '商品批次ID',
                         },
                         {
-                            dataIndex: 'qwe',
+                            dataIndex: 'qwe45654645645645645',
                             title: 'sku id',
                         },
                         {
-                            dataIndex: 'd3',
+                            dataIndex: 'name',
                             title: 'sku品名',
                         },
                         {
-                            dataIndex: 'f',
+                            dataIndex: 'category_name',
                             title: '品类',
                         },
                         {
-                            dataIndex: 'g',
+                            dataIndex: 'region_name',
                             title: '产区',
                         },
                         {
-                            dataIndex: 'h',
+                            dataIndex: 'variety_name',
                             title: '品种',
                         },
                         {
-                            dataIndex: 'i',
+                            dataIndex: 'storage_name',
                             title: '存储情况',
                         },
                         {
-                            dataIndex: 'j',
+                            dataIndex: 'process_name',
                             title: '加工情况',
                         },
                         {
-                            dataIndex: 'k',
+                            dataIndex: 'packing_name_a',
                             title: '外包装',
                         },
                         {
-                            dataIndex: 'l',
+                            dataIndex: 'packing_name_b',
                             title: '内包装',
                         },
                         {
-                            dataIndex: 'm',
+                            dataIndex: 'specification_real',
                             title: '实际规格值',
                         },
                         {
-                            dataIndex: 'n',
+                            dataIndex: 'weight_net',
                             title: '净重',
                         },
                         {
-                            dataIndex: 'date2',
+                            dataIndex: 'buy_date',
                             title: '采购日期',
                         },
                         {
-                            dataIndex: 'number3',
+                            dataIndex: 'price_settlement',
                             title: '门店结算价',
                         },
                         {
-                            dataIndex: 'number4',
+                            dataIndex: 'price_sale',
                             title: '门店在售价（单',
                         },
                         {
-                            dataIndex: 'number5',
+                            dataIndex: 'number52222222222',
                             title: '售出数量',
                         },
                         {
-                            dataIndex: 'key-20',
+                            dataIndex: 'number522222222222345345',
                             title: '门店在售价（总',
                         },
                         {
-                            dataIndex: 'key-21',
+                            dataIndex: 'remark_user',
                             title: '用户备注',
                         },
                         {
-                            dataIndex: 'key-22',
+                            dataIndex: 'remark_admin',
                             title: '管理备注',
                         },
                         {
-                            dataIndex: 'key-23',
+                            dataIndex: 'key-2334534565656565',
                             title: '发票',
                         },
                         {
                             type: 'oprate',
                             buttons: [
+                                {
+                                    text: '查看详情',
+                                    onClick: this.onShowGoodsDetail,
+                                },
                                 {
                                     text: '编辑',
                                 },
@@ -278,6 +296,16 @@ class OrderList extends Component {
                         onChange: this.handleChangePage,
                     }}
                 />
+                <Modal
+                    visible={goodsDetail}
+                    title="商品列表页"
+                    destroyOnClose
+                    footer={null}
+                    width={1000}
+                    onCancel={this.onHideGoodsDetail}
+                >
+                    <GoodsDetail detail={goodsDetailRecord} />
+                </Modal>
             </PageHeaderWrapper>
         )
     }
