@@ -191,74 +191,74 @@ class OrderList extends Component {
                             dataIndex: 'status_desc',
                             title: '订单状态',
                         },
-                        {
-                            dataIndex: 'id34564563634563',
-                            title: '商品批次ID',
-                        },
-                        {
-                            dataIndex: 'qwe45654645645645645',
-                            title: 'sku id',
-                        },
-                        {
-                            dataIndex: 'name',
-                            title: 'sku品名',
-                        },
-                        {
-                            dataIndex: 'category_name',
-                            title: '品类',
-                        },
-                        {
-                            dataIndex: 'region_name',
-                            title: '产区',
-                        },
-                        {
-                            dataIndex: 'variety_name',
-                            title: '品种',
-                        },
-                        {
-                            dataIndex: 'storage_name',
-                            title: '存储情况',
-                        },
-                        {
-                            dataIndex: 'process_name',
-                            title: '加工情况',
-                        },
-                        {
-                            dataIndex: 'packing_name_a',
-                            title: '外包装',
-                        },
-                        {
-                            dataIndex: 'packing_name_b',
-                            title: '内包装',
-                        },
-                        {
-                            dataIndex: 'specification_real',
-                            title: '实际规格值',
-                        },
-                        {
-                            dataIndex: 'weight_net',
-                            title: '净重',
-                        },
-                        {
-                            dataIndex: 'buy_date',
-                            title: '采购日期',
-                        },
-                        {
-                            dataIndex: 'price_settlement',
-                            title: '门店结算价',
-                        },
-                        {
-                            dataIndex: 'price_sale',
-                            title: '门店在售价（单',
-                        },
-                        {
-                            dataIndex: 'number52222222222',
-                            title: '售出数量',
-                        },
-                        {
-                            dataIndex: 'number522222222222345345',
-                            title: '门店在售价（总',
-                        },
+                        // {
+                        //     dataIndex: 'id34564563634563',
+                        //     title: '商品批次ID',
+                        // },
+                        // {
+                        //     dataIndex: 'qwe45654645645645645',
+                        //     title: 'sku id',
+                        // },
+                        // {
+                        //     dataIndex: 'name',
+                        //     title: 'sku品名',
+                        // },
+                        // {
+                        //     dataIndex: 'category_name',
+                        //     title: '品类',
+                        // },
+                        // {
+                        //     dataIndex: 'region_name',
+                        //     title: '产区',
+                        // },
+                        // {
+                        //     dataIndex: 'variety_name',
+                        //     title: '品种',
+                        // },
+                        // {
+                        //     dataIndex: 'storage_name',
+                        //     title: '存储情况',
+                        // },
+                        // {
+                        //     dataIndex: 'process_name',
+                        //     title: '加工情况',
+                        // },
+                        // {
+                        //     dataIndex: 'packing_name_a',
+                        //     title: '外包装',
+                        // },
+                        // {
+                        //     dataIndex: 'packing_name_b',
+                        //     title: '内包装',
+                        // },
+                        // {
+                        //     dataIndex: 'specification_real',
+                        //     title: '实际规格值',
+                        // },
+                        // {
+                        //     dataIndex: 'weight_net',
+                        //     title: '净重',
+                        // },
+                        // {
+                        //     dataIndex: 'buy_date',
+                        //     title: '采购日期',
+                        // },
+                        // {
+                        //     dataIndex: 'price_settlement',
+                        //     title: '门店结算价',
+                        // },
+                        // {
+                        //     dataIndex: 'price_sale',
+                        //     title: '门店在售价（单',
+                        // },
+                        // {
+                        //     dataIndex: 'number52222222222',
+                        //     title: '售出数量',
+                        // },
+                        // {
+                        //     dataIndex: 'number522222222222345345',
+                        //     title: '门店在售价（总',
+                        // },
                         {
                             dataIndex: 'remark_user',
                             title: '用户备注',
