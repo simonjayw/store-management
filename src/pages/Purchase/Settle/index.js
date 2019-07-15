@@ -4,6 +4,7 @@ import { connect } from 'dva'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
+import TableRenderImg from '@/components/TableRenderImg'
 
 import { getSettleList } from '../services'
 
@@ -115,19 +116,7 @@ class PurchaseSettle extends Component {
                         {
                             title: '商品图片',
                             dataIndex: 'pictures',
-                            render(pictures) {
-                                return (
-                                    <div>
-                                        {pictures.map(item => (
-                                            <img
-                                                style={{ width: 50, margin: '0 10px' }}
-                                                src={item.url}
-                                                alt={item.url}
-                                            />
-                                        ))}
-                                    </div>
-                                )
-                            },
+                            render: data => <TableRenderImg data={data} />,
                         },
                         {
                             dataIndex: 'name',
@@ -166,7 +155,7 @@ class PurchaseSettle extends Component {
                             title: '进货数量',
                         },
                         {
-                            dataIndex: 'price_settlement',
+                            dataIndex: 'price_settlement_total',
                             title: '结算总价',
                         },
                     ]}

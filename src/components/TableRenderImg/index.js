@@ -6,7 +6,7 @@ const TableRenderImg = ({ data = [] }) => (
             data.map((item, index) => (
                 <img
                     key={index}
-                    style={{ width: 50, margin: '10px' }}
+                    style={{ width: 50, margin: '0 10px' }}
                     src={item.url}
                     alt={item.url}
                 />
