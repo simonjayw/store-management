@@ -129,6 +129,7 @@ class OrderList extends Component {
                             label: '订单状态',
                             type: 'select',
                             key: 'status',
+                            initValue: '0',
                             options: [
                                 { key: -1, value: '全部' },
                                 { key: 0, value: '待支付' },
@@ -140,7 +141,20 @@ class OrderList extends Component {
                             key: 'paytype',
                             label: '支付方式',
                             type: 'select',
-                            options: [],
+                            options: [
+                                {
+                                    key: 'weixin',
+                                    value: '微信支付',
+                                },
+                                {
+                                    key: 'alipay',
+                                    value: '支付宝支付',
+                                },
+                                {
+                                    key: 'cash',
+                                    value: '现金支付',
+                                },
+                            ],
                         },
                         // {
                         //     key: 'q',
