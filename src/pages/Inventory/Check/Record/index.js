@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
+import { message } from 'antd'
 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
-import { message } from 'antd'
+
 import CheckModal from './CheckModal'
 
 import { getCheckList, checkInventory } from '../../services'
@@ -127,6 +128,7 @@ class InventoryCheckRecord extends Component {
                         {
                             label: '状态',
                             type: 'select',
+                            initValue: '0',
                             options: [{ key: 0, value: '已下架' }, { key: 1, value: '已上架' }],
                             key: 'status',
                         },
