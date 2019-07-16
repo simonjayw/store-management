@@ -86,8 +86,8 @@ class UpdateModal extends Component {
                                 validator: (rule, value, callback) => {
                                     // TODO: 是否要去重复
                                     // const v = new Set(value)
-                                    if (value.includes(undefined)) {
-                                        callback('4个配送区域都要填写')
+                                    if (value.includes('')) {
+                                        callback('请填写完整')
                                     }
                                     callback()
                                 },

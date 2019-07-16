@@ -1,11 +1,13 @@
-import React, { PureComponent } from 'react'
-import { Cascader } from 'antd'
+import React, { Component } from 'react'
+import { Cascader, Icon } from 'antd'
 import { getRegions } from '@/services/common'
 
-class CascaderScope extends PureComponent {
+import styles from './CascaderScope.less'
+
+class CascaderScope extends Component {
     state = {
         options: [],
-        scopes: [undefined, undefined, undefined, undefined],
+        scopes: [[]],
     }
 
     componentDidMount() {
@@ -21,11 +23,33 @@ class CascaderScope extends PureComponent {
 
     onChange = (value, index) => {
         const { scopes } = this.state
-        const { onChange } = this.props
-        const resId = value[value.length - 1]
-        scopes[index] = resId
+        scopes[index] = value
 
-        onChange(scopes)
+        this.changeDataByProps(scopes)
+        this.setState({
+            scopes,
+        })
+    }
+
+    changeDataByProps = scopes => {
+        const { onChange } = this.props
+        const result = scopes.map(item => {
+            if (item.length === 0) {
+                return ''
+            }
+            return item[item.length - 1]
+        })
+        onChange(result)
+    }
+
+    handleChangeRow = index => {
+        const { scopes } = this.state
+        if (index === 0) {
+            scopes.push([])
+        } else {
+            scopes.splice(index, 1)
+        }
+        this.changeDataByProps(scopes)
         this.setState({
             scopes,
         })
@@ -61,50 +85,33 @@ class CascaderScope extends PureComponent {
     }
 
     render() {
-        const { options } = this.state
+        const { options, scopes } = this.state
 
         return (
             <div>
-                <Cascader
-                    options={options}
-                    placeholder="请选择配送范围"
-                    loadData={this.loadData}
-                    fieldNames={{
-                        label: 'name',
-                        value: 'id',
-                    }}
-                    onChange={v => this.onChange(v, 0)}
-                />
-                <Cascader
-                    options={options}
-                    placeholder="请选择配送范围"
-                    loadData={this.loadData}
-                    fieldNames={{
-                        label: 'name',
-                        value: 'id',
-                    }}
-                    onChange={v => this.onChange(v, 1)}
-                />
-                <Cascader
-                    options={options}
-                    placeholder="请选择配送范围"
-                    loadData={this.loadData}
-                    fieldNames={{
-                        label: 'name',
-                        value: 'id',
-                    }}
-                    onChange={v => this.onChange(v, 2)}
-                />
-                <Cascader
-                    options={options}
-                    placeholder="请选择配送范围"
-                    loadData={this.loadData}
-                    fieldNames={{
-                        label: 'name',
-                        value: 'id',
-                    }}
-                    onChange={v => this.onChange(v, 3)}
-                />
+                {scopes.map((value, index) => (
+                    <div key={index}>
+                        <Cascader
+                            options={options}
+                            placeholder="请选择配送范围"
+                            loadData={this.loadData}
+                            value={value}
+                            style={{ width: '90%' }}
+                            fieldNames={{
+                                label: 'name',
+                                value: 'id',
+                            }}
+                            onChange={v => this.onChange(v, index)}
+                        />
+                        <span onClick={() => this.handleChangeRow(index)} className={styles.button}>
+                            {index === 0 ? (
+                                <Icon type="plus-circle" />
+                            ) : (
+                                <Icon type="minus-circle" />
+                            )}
+                        </span>
+                    </div>
+                ))}
             </div>
         )
     }
