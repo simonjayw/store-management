@@ -5,7 +5,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
 
-import { getMemberListMOCK } from '../services'
+import { getMemberList } from '../services'
 
 @connect(() => ({}))
 class StatisticsMember extends Component {
@@ -28,7 +28,7 @@ class StatisticsMember extends Component {
         const { pageNum, ...params } = parmas
         const { pagination, searchCondition } = this.state
 
-        getMemberListMOCK({
+        getMemberList({
             size: pagination.pageSize,
             index: pageNum || pagination.current,
             ...searchCondition,
@@ -49,10 +49,23 @@ class StatisticsMember extends Component {
     // 查询表单搜索
     handleFormSearch = values => {
         const { pagination } = this.state
+        const searchCondition = {}
+
+        if (values.date) {
+            if (values.date.length === 2) {
+                const [beginTime, endTime] = values.date
+                searchCondition.begin_time = beginTime
+                searchCondition.end_time = endTime
+            }
+            delete values.date
+        }
 
         this.setState(
             {
-                searchCondition: values,
+                searchCondition: {
+                    ...searchCondition,
+                    ...values,
+                },
                 pagination: {
                     ...pagination,
                     current: 1,
@@ -93,11 +106,11 @@ class StatisticsMember extends Component {
                         {
                             label: '日期',
                             type: 'radiogroup',
-                            key: 'day',
+                            key: 'days',
                             options: [
-                                { text: '全部', value: 'all' },
-                                { text: '最近30天', value: '30' },
-                                { text: '最近90天', value: '90' },
+                                { text: '全部', value: 0 },
+                                { text: '最近30天', value: 30 },
+                                { text: '最近90天', value: 90 },
                             ],
                         },
                         {
@@ -112,22 +125,22 @@ class StatisticsMember extends Component {
                     columns={[
                         {
                             title: '排行',
-                            dataIndex: 'id1',
+                            dataIndex: 'rank',
                         },
                         {
                             title: '会员名',
-                            dataIndex: 'a',
+                            dataIndex: 'name',
                         },
                         {
                             title: '累计订单数',
-                            dataIndex: 'number3',
+                            dataIndex: 'order_total',
                         },
                         {
                             title: '累计消费金额',
-                            dataIndex: 'number2',
+                            dataIndex: 'amount_total',
                         },
                         {
-                            dataIndex: 'number1',
+                            dataIndex: 'amount_average',
                             title: '平均订单金额',
                         },
                     ]}

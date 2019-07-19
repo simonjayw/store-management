@@ -4,9 +4,9 @@ import { connect } from 'dva'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
-import ButtonGroup from '@/components/ButtonGroup'
+// import ButtonGroup from '@/components/ButtonGroup'
 
-import { getStoreListMOCK } from '../services'
+import { getStoreList } from '../services'
 
 @connect(() => ({}))
 class StatisticsStore extends Component {
@@ -29,7 +29,7 @@ class StatisticsStore extends Component {
         const { pageNum, ...params } = parmas
         const { pagination, searchCondition } = this.state
 
-        getStoreListMOCK({
+        getStoreList({
             size: pagination.pageSize,
             index: pageNum || pagination.current,
             ...searchCondition,
@@ -50,10 +50,16 @@ class StatisticsStore extends Component {
     // 查询表单搜索
     handleFormSearch = values => {
         const { pagination } = this.state
+        const searchCondition = {}
 
+        if (values.date && values.date.length === 2) {
+            const [beginTime, endTime] = values.date
+            searchCondition.begin_time = beginTime
+            searchCondition.end_time = endTime
+        }
         this.setState(
             {
-                searchCondition: values,
+                searchCondition,
                 pagination: {
                     ...pagination,
                     current: 1,
@@ -99,53 +105,53 @@ class StatisticsStore extends Component {
                     ]}
                     buttonGroup={[{ onSearch: this.handleFormSearch }]}
                 />
-                <ButtonGroup
+                {/* <ButtonGroup
                     secondary={[
                         {
                             text: '导出数据',
                         },
                     ]}
-                />
+                /> */}
                 <BasicTable
                     columns={[
                         {
                             title: '日期',
-                            dataIndex: 'date1',
+                            dataIndex: 'date',
                         },
                         {
                             title: '门店ID',
-                            dataIndex: 'id1',
+                            dataIndex: 'mch_id',
                         },
                         {
                             title: '门店名称',
-                            dataIndex: 'a',
+                            dataIndex: 'mch_name',
                         },
                         {
                             title: '门店销售总额',
-                            dataIndex: 'number1',
+                            dataIndex: 'amount_sale',
                         },
                         {
-                            dataIndex: 'b',
+                            dataIndex: 'amount_loss',
                             title: '门店损耗额',
                         },
                         {
-                            dataIndex: 'c',
+                            dataIndex: 'amount_settlement',
                             title: '对应结算成本总额',
                         },
                         {
-                            dataIndex: 'd',
+                            dataIndex: 'amount_gross_profit',
                             title: '毛利额',
                         },
                         {
-                            dataIndex: 'e',
+                            dataIndex: 'rate_gross_profit',
                             title: '毛利率',
                         },
                         {
-                            dataIndex: 'ff',
+                            dataIndex: 'amount_gross_profit_4',
                             title: '四毛额',
                         },
                         {
-                            dataIndex: 'g',
+                            dataIndex: 'rate_gross_profit_4',
                             title: '四毛率',
                         },
                     ]}

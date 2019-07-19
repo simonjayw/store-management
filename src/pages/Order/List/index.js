@@ -5,7 +5,7 @@ import { Modal } from 'antd'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
-import ButtonGroup from '@/components/ButtonGroup'
+// import ButtonGroup from '@/components/ButtonGroup'
 import GoodsDetail from './goodsDetail'
 
 import { getOrderList } from '../services'
@@ -164,13 +164,13 @@ class OrderList extends Component {
                     ]}
                     buttonGroup={[{ onSearch: this.handleFormSearch }]}
                 />
-                <ButtonGroup
+                {/* <ButtonGroup
                     secondary={[
                         {
                             text: '导出',
                         },
                     ]}
-                />
+                /> */}
                 <BasicTable
                     columns={[
                         {

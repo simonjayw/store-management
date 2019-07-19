@@ -4,9 +4,9 @@ import { connect } from 'dva'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
 import BasicTable from '@/components/BasicTable'
-import ButtonGroup from '@/components/ButtonGroup'
+// import ButtonGroup from '@/components/ButtonGroup'
 
-import { getCommodityListMOCK } from '../services'
+import { getCommodityList } from '../services'
 
 @connect(() => ({}))
 class StatisticsCommodity extends Component {
@@ -29,7 +29,7 @@ class StatisticsCommodity extends Component {
         const { pageNum, ...params } = parmas
         const { pagination, searchCondition } = this.state
 
-        getCommodityListMOCK({
+        getCommodityList({
             size: pagination.pageSize,
             index: pageNum || pagination.current,
             ...searchCondition,
@@ -50,10 +50,17 @@ class StatisticsCommodity extends Component {
     // 查询表单搜索
     handleFormSearch = values => {
         const { pagination } = this.state
+        const searchCondition = {}
+
+        if (values.date && values.date.length === 2) {
+            const [beginTime, endTime] = values.date
+            searchCondition.begin_time = beginTime
+            searchCondition.end_time = endTime
+        }
 
         this.setState(
             {
-                searchCondition: values,
+                searchCondition,
                 pagination: {
                     ...pagination,
                     current: 1,
@@ -99,77 +106,77 @@ class StatisticsCommodity extends Component {
                     ]}
                     buttonGroup={[{ onSearch: this.handleFormSearch }]}
                 />
-                <ButtonGroup
+                {/* <ButtonGroup
                     secondary={[
                         {
                             text: '导出数据',
                         },
                     ]}
-                />
+                /> */}
                 <BasicTable
                     columns={[
                         {
                             title: '商品批次id',
-                            dataIndex: 'id1',
+                            dataIndex: 'serial_no',
                         },
                         {
                             title: 'sku id',
-                            dataIndex: 'id2',
+                            dataIndex: 'skuid',
                         },
                         {
                             title: 'sku品名',
-                            dataIndex: 'a',
+                            dataIndex: 'name',
                         },
                         {
                             title: '品类',
-                            dataIndex: 'b',
+                            dataIndex: 'category_name',
                         },
                         {
-                            dataIndex: 'd',
+                            dataIndex: 'specification_real',
                             title: '实际规格值',
                         },
                         {
-                            dataIndex: 'e',
+                            dataIndex: 'weight_net',
                             title: '净重',
                         },
                         {
-                            dataIndex: 'c',
+                            dataIndex: 'amount_settlement',
                             title: '门店结算总价',
                         },
                         {
-                            dataIndex: 'f',
+                            dataIndex: 'price_sale',
                             title: '门店售价',
                         },
                         {
-                            dataIndex: 'number1',
+                            dataIndex: 'quantity_sale',
                             title: '销售数量',
                         },
                         {
-                            dataIndex: 'number2',
+                            dataIndex: 'amount_sale',
                             title: '销售收入',
                         },
                         {
-                            dataIndex: 'number4',
+                            dataIndex: 'amount_purchase',
                             title: '进货成本',
                         },
                         {
-                            dataIndex: 'ff',
+                            dataIndex: 'quantity_loss',
                             title: '门店损耗数（库存差值）',
                         },
                         {
-                            dataIndex: 'g',
+                            dataIndex: 'amount_loss',
                             title: '门店损耗额',
                         },
                         {
-                            dataIndex: 'h',
+                            dataIndex: 'rate_loss',
                             title: '损耗率',
                         },
                         {
-                            dataIndex: 'i',
+                            dataIndex: 'amount_gross_profit',
                             title: '毛利额',
                         },
                         {
-                            dataIndex: 'j',
+                            dataIndex: 'rate_gross_profit',
                             title: '毛利率',
                         },
                     ]}
