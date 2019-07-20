@@ -183,23 +183,38 @@ class OrderList extends Component {
                         },
                         {
                             title: '客户id',
-                            dataIndex: 'id234234232',
+                            dataIndex: 'contacter',
                         },
                         {
                             title: '客户电话',
-                            dataIndex: 'a23423423423',
+                            dataIndex: 'mobile',
                         },
                         {
-                            dataIndex: 'b2424',
+                            dataIndex: 'anyname',
                             title: '客户姓名',
+                            render(_, { invoice }) {
+                                return invoice.name
+                            },
                         },
                         {
-                            dataIndex: 'amount',
+                            dataIndex: 'amount_total',
                             title: '订单金额',
                         },
                         {
-                            dataIndex: 'c345346456',
+                            dataIndex: 'amount_actually',
+                            title: '实收金额',
+                        },
+                        {
+                            dataIndex: 'paytype',
                             title: '支付方式',
+                            render(paytype) {
+                                const map = {
+                                    weixin: '微信支付',
+                                    alipay: '支付宝支付',
+                                    cash: '现金支付',
+                                }
+                                return map[paytype]
+                            },
                         },
                         {
                             dataIndex: 'status_desc',
@@ -282,8 +297,11 @@ class OrderList extends Component {
                             title: '管理备注',
                         },
                         {
-                            dataIndex: 'key-2334534565656565',
+                            dataIndex: 'anyinvoicetitle',
                             title: '发票',
+                            render(_, { invoice }) {
+                                return invoice.title
+                            },
                         },
                         {
                             type: 'oprate',

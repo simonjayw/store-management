@@ -203,15 +203,15 @@ class InventoryCheckRecord extends Component {
                         },
                         {
                             dataIndex: 'stock_total',
-                            title: '期初库存',
+                            title: '剩余库存',
                         },
-                        {
-                            dataIndex: 'stock_count',
-                            title: '期末库存',
-                        },
+                        // {
+                        //     dataIndex: 'stock_count',
+                        //     title: '期末库存',
+                        // },
                         {
                             dataIndex: 'stock_now',
-                            title: '当前库存',
+                            title: '实时库存',
                         },
                         {
                             dataIndex: 'status_desc',
