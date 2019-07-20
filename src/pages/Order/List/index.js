@@ -205,16 +205,8 @@ class OrderList extends Component {
                             title: '实收金额',
                         },
                         {
-                            dataIndex: 'paytype',
+                            dataIndex: 'paytype_desc',
                             title: '支付方式',
-                            render(paytype) {
-                                const map = {
-                                    weixin: '微信支付',
-                                    alipay: '支付宝支付',
-                                    cash: '现金支付',
-                                }
-                                return map[paytype]
-                            },
                         },
                         {
                             dataIndex: 'status_desc',
