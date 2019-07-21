@@ -160,8 +160,8 @@ class DynamicGeneratePage extends Component {
         const { pushColumns } = this.props
         let columns = []
         filelds.forEach(item => {
-            // 为1时隐藏
-            if (item.hidden === 1) {
+            // 为1 / 3时隐藏
+            if (item.hidden === 1 || item.hidden === 3) {
                 return
             }
             const colObj = {

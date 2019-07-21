@@ -302,15 +302,15 @@ class OrderList extends Component {
                                     text: '查看详情',
                                     onClick: this.onShowGoodsDetail,
                                 },
-                                {
-                                    text: '编辑',
-                                },
-                                {
-                                    text: '记录',
-                                },
-                                {
-                                    text: '发货',
-                                },
+                                // {
+                                //     text: '编辑',
+                                // },
+                                // {
+                                //     text: '记录',
+                                // },
+                                // {
+                                //     text: '发货',
+                                // },
                             ],
                         },
                     ]}

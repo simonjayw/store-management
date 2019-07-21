@@ -46,7 +46,8 @@ class AddModal extends Component {
                             ? moment(new Date(item.default_value))
                             : null
                     }
-                    if (item.hidden === 1) {
+                    // 新增 编辑 1 2 隐藏
+                    if (item.hidden === 1 || item.hidden === 2) {
                         formItemStyle.display = 'none'
                     } else {
                         fieldsOptions.rules = [{ required: true, message: '该项必填' }]
