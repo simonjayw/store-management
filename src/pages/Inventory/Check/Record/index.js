@@ -218,6 +218,10 @@ class InventoryCheckRecord extends Component {
                             title: '上下架状态',
                         },
                         {
+                            dataIndex: 'stocktaking_date',
+                            title: '盘点日期',
+                        },
+                        {
                             type: 'oprate',
                             buttons: [
                                 {
