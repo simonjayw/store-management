@@ -6,6 +6,12 @@ export default [
         routes: [
             { path: '/user', redirect: '/user/login' },
             { path: '/user/login', name: '登陆', temp: true, component: './User/Login' },
+            {
+                path: '/user/resetPassword',
+                name: '重制密码',
+                temp: true,
+                component: './User/ResetPassword',
+            },
             // { path: '/user/register', name: '注册', component: './User/Register' },
             // {
             //     path: '/user/register-result',

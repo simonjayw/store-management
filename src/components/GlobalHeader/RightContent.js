@@ -83,6 +83,11 @@ export default class GlobalHeaderRight extends PureComponent {
                     用户设置
                 </Menu.Item>
                 <Menu.Divider /> */}
+                <Menu.Item key="resetPassword">
+                    <Icon type="setting" />
+                    修改密码
+                </Menu.Item>
+                <Menu.Divider />
                 <Menu.Item key="logout">
                     <Icon type="logout" />
                     登出

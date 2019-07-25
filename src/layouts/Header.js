@@ -68,6 +68,10 @@ class HeaderView extends Component {
             router.push('/account/settings/base')
             return
         }
+        if (key === 'resetPassword') {
+            router.push('/user/resetPassword')
+            return
+        }
         if (key === 'logout') {
             dispatch({
                 type: 'login/logout',

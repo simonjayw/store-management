@@ -18,3 +18,12 @@ export const logout = async params => {
         },
     })
 }
+
+export const resetPassword = async params => {
+    return createAPI('/admin', 'get', {
+        params: {
+            t: 'member.setpwd',
+            ...params,
+        },
+    })
+}
