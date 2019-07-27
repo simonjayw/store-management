@@ -129,7 +129,7 @@ class OrderList extends Component {
                             label: '订单状态',
                             type: 'select',
                             key: 'status',
-                            initValue: '0',
+                            initValue: '-1',
                             options: [
                                 { key: -1, value: '全部' },
                                 { key: 0, value: '待支付' },
