@@ -186,6 +186,17 @@ class FinanceInvoice extends Component {
 
             columns.push(colObj)
         })
+        columns.push({
+            title: '状态',
+            dataIndex: 'status',
+            render(d) {
+                const statusMap = {
+                    0: '未处理',
+                    1: '已处理',
+                }
+                return statusMap[d]
+            },
+        })
         return columns
     }
 

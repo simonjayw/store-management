@@ -175,7 +175,7 @@ class CommodityManagement extends Component {
                         {
                             label: '状态',
                             type: 'select',
-                            initValue: '0',
+                            // initValue: '0',
                             options: [{ key: 0, value: '已下架' }, { key: 1, value: '已上架' }],
                             key: 'status',
                         },

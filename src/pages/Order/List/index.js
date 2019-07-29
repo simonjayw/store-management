@@ -175,7 +175,7 @@ class OrderList extends Component {
                     columns={[
                         {
                             title: '订单时间',
-                            dataIndex: 'order_time',
+                            dataIndex: 'create_time',
                         },
                         {
                             title: '订单id',
