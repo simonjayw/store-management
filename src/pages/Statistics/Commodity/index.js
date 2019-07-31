@@ -50,17 +50,10 @@ class StatisticsCommodity extends Component {
     // 查询表单搜索
     handleFormSearch = values => {
         const { pagination } = this.state
-        const searchCondition = {}
-
-        if (values.date && values.date.length === 2) {
-            const [beginTime, endTime] = values.date
-            searchCondition.begin_time = beginTime
-            searchCondition.end_time = endTime
-        }
 
         this.setState(
             {
-                searchCondition,
+                searchCondition: values,
                 pagination: {
                     ...pagination,
                     current: 1,
@@ -99,9 +92,9 @@ class StatisticsCommodity extends Component {
                 <SearchForm
                     data={[
                         {
-                            label: '日期',
-                            type: 'rangepicker',
-                            key: 'date',
+                            label: '关键字',
+                            type: 'input',
+                            key: 'q',
                         },
                     ]}
                     buttonGroup={[{ onSearch: this.handleFormSearch }]}

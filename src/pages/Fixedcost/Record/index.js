@@ -9,12 +9,12 @@ class FixedcostRecord extends Component {
         return (
             <DynamicGeneratePage
                 cid="2B494B4143B725023K"
-                pushColumns={[
-                    {
-                        title: '创建时间',
-                        dataIndex: 'last_time',
-                    },
-                ]}
+                // pushColumns={[
+                //     {
+                //         title: '创建时间',
+                //         dataIndex: 'last_time',
+                //     },
+                // ]}
             />
         )
     }

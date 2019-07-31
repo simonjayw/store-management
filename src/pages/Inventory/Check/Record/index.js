@@ -198,17 +198,17 @@ class InventoryCheckRecord extends Component {
                             title: '门店售价',
                         },
                         {
+                            dataIndex: 'stock_total',
+                            title: '剩余库存',
+                        },
+                        {
                             dataIndex: 'stock_initial',
                             title: '入库库存',
                         },
                         {
-                            dataIndex: 'stock_total',
-                            title: '剩余库存',
+                            dataIndex: 'stock_push',
+                            title: '出库库存',
                         },
-                        // {
-                        //     dataIndex: 'stock_count',
-                        //     title: '期末库存',
-                        // },
                         {
                             dataIndex: 'stock_now',
                             title: '实时库存',
