@@ -149,7 +149,7 @@ class StatisticsCommodity extends Component {
                             title: '销售收入',
                         },
                         {
-                            dataIndex: 'amount_purchase',
+                            dataIndex: 'price_settlement',
                             title: '进货成本',
                         },
                         {
@@ -165,11 +165,11 @@ class StatisticsCommodity extends Component {
                             title: '损耗率',
                         },
                         {
-                            dataIndex: 'amount_gross_profit',
+                            dataIndex: 'amount_gross_profit_mch',
                             title: '毛利额',
                         },
                         {
-                            dataIndex: 'rate_gross_profit',
+                            dataIndex: 'rate_gross_profit_mch',
                             title: '毛利率',
                         },
                     ]}
